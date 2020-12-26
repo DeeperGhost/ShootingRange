@@ -1,0 +1,43 @@
+
+.multform{
+    display: block;
+
+    text-align: center;
+    padding: 2rem 2rem;
+
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+
+   /* width:15%;*/
+  /*  vertical-align: middle;*/
+    background: blue;
+}
+
+.inputfile {
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.lab1, .lab2{
+    font-size: 3em;
+    font-weight: 1000;
+     padding: 1.25rem 1.25rem;
+    -webkit-box-shadow: 3px 7px 5px 1px rgba(0,0,0,0.76);
+    box-shadow: 3px 7px 5px 1px rgba(0,0,0,0.76);
+    cursor: pointer;
+
+}
+
+.lab1{
+    background-color: yellow;
+}
+
+.lab2{
+    background-color: red;
+}

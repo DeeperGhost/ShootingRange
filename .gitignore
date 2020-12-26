@@ -1,0 +1,6 @@
+/venv
+/data/*
+/.idea*
+__pycache__/
+*.idea*
+vcs.xml

@@ -1,0 +1,5 @@
+Flask 1.1.2
+flask_sqlalchemy
+Flask-Migrate
+psycopg2
+SQLAlchemy
