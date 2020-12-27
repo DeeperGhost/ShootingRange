@@ -1,7 +1,9 @@
 from flask import Flask
 
 from app.extensions import db, migrate
-from config import ConfigObject, HOST, PORT
+from app.models.user import USER
+
+from config import ConfigObject
 
 # from app.views.indicators import indicators
 # from app.views.upload import upload
@@ -15,8 +17,8 @@ def create_app(config_object=ConfigObject):
     register_extensions(app)
     register_blueprints(app)
     # app.run(host=HOST, port=PORT)
-    # app.run(host='192.168.0.100', port='9999', debug=True)
-    return app
+    app.run(host='192.168.0.100', port='9999', debug=True)
+    # return app
 
 
 def register_extensions(app):
@@ -28,3 +30,4 @@ def register_blueprints(app):
 #     app.register_blueprint(indicators)
 #     app.register_blueprint(upload)
     app.register_blueprint(basic_view)
+

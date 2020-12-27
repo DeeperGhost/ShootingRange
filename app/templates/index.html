@@ -1,40 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends "base.html" %}
 
-    <title>Тир</title>
-
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/header.css') }}">
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+{% block content %}
 
 
-</head>
-<body>
+<h1>Влажность - {{hum}}</h1>
 
-<header>
-    <nav class="menu">
-        <ul>
-            <li><a href="{{ url_for('basic_view.index') }}" class="linkhead">Новости</a></li>
-            <li><a href="" class="linkhead">Рейтинг</a></li>
-            <li><a href="" class="linkhead">Соревнования</a></li>
-            <li><a href="{{ url_for('basic_view.about') }}" class="linkhead">Информация</a></li>
-
-            <li><a href="" class="linkhead_Right">Вход</a></li>
-            <li><a href="" class="linkhead_Right">Регистрация</a></li>
-
-        </ul>
-    </nav>
-</header>
+<p>Температура- {{temp}}</p>
 
 
-    <h1>Влажность - {{hum}}</h1>
-
-    <h1>Температура- {{temp}}</h1>
-
-
-
-
-</body>
-</html>
+{% endblock %}
