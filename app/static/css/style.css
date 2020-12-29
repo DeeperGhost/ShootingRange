@@ -1,12 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Piedra&display=swap');
 
 h1{
-    text-align: left;
-    font-family: 'Piedra', cursive;
-    font-size: 50px;
-    font-weight: bold;
-
-    margin: 20px;
+    text-align: center;
+    font-size: 40px;
 }
 
 p{
@@ -14,9 +10,40 @@ p{
 }
 
 
+.loginform{
+  padding: 50px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+
+  box-shadow: 10px 5px 5px #9fa6ad;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+input ,  button{
+    height: 30px;
+    width : 200px;
+    margin: 0;
+
+    -webkit-box-sizing: border-box; /* For legacy WebKit based browsers */
+    -moz-box-sizing: border-box; /* For legacy (Firefox <29) Gecko based browsers */
+    box-sizing: border-box;
+}
+
+.checklist{
+  padding: 50px;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 
 
-
-
-
-
+}
