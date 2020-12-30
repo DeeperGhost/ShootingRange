@@ -6,3 +6,4 @@ SQLAlchemy
 flask_wtf
 requests
 flask-login
+email_validator

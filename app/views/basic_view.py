@@ -1,16 +1,14 @@
-from flask import Blueprint, render_template, json, request
-from flask import flash, redirect, url_for
-# from config import indicatorsPath
-from app.views.base_except_view import base_view_except
-from app.forms.login_form import LoginForm, SignupForm
-
-
-from flask_login import logout_user
-from app.logic.user_logic import signup_query
-
 import requests
 
+from flask import Blueprint, render_template, json, request
+from flask import flash, redirect, url_for
+
 from flask_login import current_user, login_user, login_required
+from flask_login import logout_user
+
+from app.views.base_except_view import base_view_except
+from app.forms.login_form import LoginForm, RegistrationForm
+from app.logic.user_logic import signup_query
 from app.models.user import USER
 
 basic_view = Blueprint('basic_view', __name__, template_folder='templates')
@@ -49,7 +47,6 @@ def games():
 @login_required
 def profile():
     username = str(current_user.id) + current_user.login
-
     return render_template('profile.html', title='Профиль', username=username)
 
 
@@ -61,6 +58,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = USER.query.filter_by(email=form.email.data).first()
+        # user = USER.query.filter_by(login=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('basic_view.login'))
@@ -80,25 +78,11 @@ def logout():
 @basic_view.route('/signup', methods=['GET', 'POST'])
 @base_view_except
 def signup():
-    form = SignupForm()
-
-    username = request.form.get('username')
-    email = request.form.get('email')
-    password = request.form.get('password')
-    # print(username, email, password)
-
+    if current_user.is_authenticated:
+        return redirect(url_for('basic_view.login'))
+    form = RegistrationForm()
     if form.validate_on_submit():
-        if 1 == signup_query(username, email, password):
-            return redirect(url_for('basic_view.login'))
-        elif 0 == signup_query(username, email, password):
-            flash('Email address already exists')
-            return render_template('signup.html', title='Регистрация', form=form)
-
+        signup_query(username=form.username.data, email=form.email.data, password=form.password.data)
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('basic_view.login'))
     return render_template('signup.html', title='Регистрация', form=form)
-
-
-@basic_view.route('/get_len', methods=['GET', 'POST'])
-@base_view_except
-def get_len():
-    name = request.form['name']
-    return json.dumps({'len': len(name)})

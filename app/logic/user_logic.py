@@ -1,7 +1,10 @@
+import datetime
+
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from app.extensions import db
 from app.models.user import USER
-from werkzeug.security import generate_password_hash, check_password_hash
-import datetime
+
 
 def admin_pg_db():
     # создает все таблицы
@@ -19,8 +22,8 @@ def select_electro():
 def signup_query(username, email, password):
     user = USER.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
     create_date = str(datetime.datetime.now())
-    if user:# if a user is found, we want to redirect back to signup page so user can try again
-        return 0
+    # if user:# if a user is found, we want to redirect back to signup page so user can try again
+    #     return 0
 
     # create a new user with the form data. Hash the password so the plaintext version isn't saved.
     # print("test=",user, email,generate_password_hash(password, method='sha256'))
@@ -29,7 +32,7 @@ def signup_query(username, email, password):
     # add the new user to the database
     db.session.add(new_user)
     db.session.commit()
-    return 1
+    # return 1
 
 # def login(email, password):
 #     if 0:
