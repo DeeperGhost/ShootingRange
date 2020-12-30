@@ -24,10 +24,13 @@
             <li><a href="{{ url_for('basic_view.games') }}" class="linkhead">Соревнования</a></li>
             <li><a href="{{ url_for('basic_view.about') }}" class="linkhead">Информация</a></li>
 
-            <li><a href="{{ url_for('basic_view.profile') }}" class="linkhead">Профиль</a></li>
+            {% if current_user.is_anonymous %}
             <li><a href="{{ url_for('basic_view.login') }}" class="linkhead">Вход</a></li>
             <li><a href="{{ url_for('basic_view.signup') }}" class="linkhead">Регистрация</a></li>
+            {% else %}
+            <li><a href="{{ url_for('basic_view.profile') }}" class="linkhead">Профиль</a></li>
             <li><a href="{{ url_for('basic_view.logout') }}" class="linkhead">Выход</a></li>
+            {% endif %}
 
         </ul>
     </nav>

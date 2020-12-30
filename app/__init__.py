@@ -1,6 +1,6 @@
 from flask import Flask
 
-from app.extensions import db, migrate
+from app.extensions import db, migrate, login_manager
 from app.models.user import USER
 
 from config import ConfigObject
@@ -16,6 +16,7 @@ def create_app(config_object=ConfigObject):
 
     register_extensions(app)
     register_blueprints(app)
+
     # app.run(host=HOST, port=PORT)
     app.run(host='192.168.0.100', port='9999', debug=True)
     # return app
@@ -24,6 +25,7 @@ def create_app(config_object=ConfigObject):
 def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
+    login_manager.init_app(app)
 
 
 def register_blueprints(app):

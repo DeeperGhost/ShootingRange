@@ -4,9 +4,14 @@ from flask import flash, redirect, url_for
 from app.views.base_except_view import base_view_except
 from app.forms.login_form import LoginForm, SignupForm
 
+
+from flask_login import logout_user
 from app.logic.user_logic import signup_query
 
 import requests
+
+from flask_login import current_user, login_user, login_required
+from app.models.user import USER
 
 basic_view = Blueprint('basic_view', __name__, template_folder='templates')
 
@@ -26,6 +31,7 @@ def index():
 def about():
     return render_template('about.html', title='О нас')
 
+
 @basic_view.route('/rating')
 @base_view_except
 def rating():
@@ -37,29 +43,37 @@ def rating():
 def games():
     return render_template('games.html', title='Соревнования')
 
+
 @basic_view.route('/profile')
 @base_view_except
+@login_required
 def profile():
-    username = "Vasya"
+    username = str(current_user.id) + current_user.login
+
     return render_template('profile.html', title='Профиль', username=username)
 
 
 @basic_view.route('/login', methods=['GET', 'POST'])
 @base_view_except
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('basic_view.profile'))
     form = LoginForm()
     if form.validate_on_submit():
-        email = request.form.get('email')
-        password = request.form.get('password')
-        remember = True if request.form.get('remember') else False
-
-        return redirect(url_for('basic_view.index'))
+        user = USER.query.filter_by(email=form.email.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username or password')
+            return redirect(url_for('basic_view.login'))
+        login_user(user)
+        # login_user(user, remember=form.remember_me.data)
+        return redirect(url_for('basic_view.profile'))
     return render_template('login.html', title='Вход', form=form)
+
 
 @basic_view.route('/logout')
 @base_view_except
 def logout():
-    username = "Vasya"
+    logout_user()
     return render_template('index.html', title='Новости')
 
 
@@ -71,7 +85,7 @@ def signup():
     username = request.form.get('username')
     email = request.form.get('email')
     password = request.form.get('password')
-    print(username, email, password)
+    # print(username, email, password)
 
     if form.validate_on_submit():
         if 1 == signup_query(username, email, password):

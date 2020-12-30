@@ -31,8 +31,11 @@ def signup_query(username, email, password):
     db.session.commit()
     return 1
 
-def login(email, password):
-    if 0:
-        return 0
-    else:
-        return 1
+# def login(email, password):
+#     if 0:
+#         return 0
+#     else:
+#         email = USER.query.filter_by(email=email).first()
+#         password = USER.query.filter_by(password=password).first()
+#         if email and password:
+#             return 1
