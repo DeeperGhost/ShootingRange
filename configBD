@@ -25,4 +25,13 @@
 -struct: string
 
 
+//СОРЕВНОВАНИЯ
+-id
+-name
+-разделы
+-start_date
+-описание
+
+
+
 

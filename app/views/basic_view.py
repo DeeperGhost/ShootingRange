@@ -11,7 +11,17 @@ from app.forms.login_form import LoginForm, RegistrationForm
 from app.logic.user_logic import signup_query
 from app.models.user import USER
 
+import os
+from flask import send_from_directory
+
 basic_view = Blueprint('basic_view', __name__, template_folder='templates')
+
+
+@basic_view.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(basic_view.static, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 
 
 @basic_view.route('/', methods=['GET', 'POST'])
