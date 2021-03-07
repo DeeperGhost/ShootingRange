@@ -5,6 +5,10 @@ h1{
     font-size: 40px;
 }
 
+h2{
+    text-align: center;
+    font-size: 20px;
+}
 p{
     text-indent: 20pt;
 }
@@ -44,6 +48,18 @@ input ,  button{
     -webkit-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-
-
 }
+
+
+table {
+    width: 70%; /* Ширина таблицы */
+    margin: auto; /*по центру элемента*/
+    border-collapse: collapse; /* Убираем двойные рамки */
+   }
+   th, td {
+    border: 1px solid #333; /* Параметры рамки */
+    padding: 4px; /* Поля в ячейках */
+   }
+   tr:hover {
+    background: #C0C0C0; /* Цвет фона */
+   }

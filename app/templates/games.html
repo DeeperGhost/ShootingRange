@@ -1,7 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="checklist">
+
     <h1>Соревнования</h1>
-</div>
+
+<br>
+<br>
+<table class="event_table">
+    <tr>
+        <th>id-соревнования</th>
+        <th>id-создателя</th>
+        <th>название</th>
+        <th>дата начала</th>
+        <th>дата создания</th>
+        <th>описание</th>
+        <th>статус</th>
+        <th>подробно</th>
+
+    </tr>
+    {% for i in table %}
+    <a href="{{ url_for('basic_view.about') }}">
+    <tr>
+         <td>{{i.id}}</td>
+        <td>{{i.id_user}}</td>
+        <td>{{i.event_name}}</td>
+        <td>{{i.start_date}}</td>
+        <td>{{i.create_date}}</td>
+        <td>{{i.caption}}</td>
+        <td>{{i.event_status}}</td>
+        <td><a href="">статистика</a></td>
+    </tr>
+    </a>
+
+    {% endfor %}
+</table>
+
+
 {% endblock %}

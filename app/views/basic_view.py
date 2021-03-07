@@ -8,7 +8,11 @@ from flask_login import logout_user
 
 from app.views.base_except_view import base_view_except
 from app.forms.login_form import LoginForm, RegistrationForm
+from app.forms.add_events_form import AddEvent
+
 from app.logic.user_logic import signup_query
+from app.logic.user_logic import add_events, select_events
+
 from app.models.user import USER
 
 import os
@@ -21,7 +25,6 @@ basic_view = Blueprint('basic_view', __name__, template_folder='templates')
 def favicon():
     return send_from_directory(os.path.join(basic_view.static, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
-
 
 
 @basic_view.route('/', methods=['GET', 'POST'])
@@ -49,15 +52,34 @@ def rating():
 @basic_view.route('/games')
 @base_view_except
 def games():
-    return render_template('games.html', title='Соревнования')
+    table = select_events("all")
+
+    return render_template('games.html', title='Соревнования', table=table)
 
 
 @basic_view.route('/profile')
 @base_view_except
 @login_required
 def profile():
-    username = str(current_user.id) + current_user.login
-    return render_template('profile.html', title='Профиль', username=username)
+    username = current_user.login
+    table = select_events(str(current_user.id))
+    # add_events(str(current_user.id))
+    return render_template('profile.html', title='Профиль', username=username, table=table)
+
+
+@basic_view.route('/addevent', methods=['GET', 'POST'])
+@base_view_except
+@login_required
+def addevent():
+    form = AddEvent()
+    if form.validate_on_submit():
+        add_events(id_curent_user=str(current_user.id), event_name=form.name.data,
+                   caption=form.caption.data, start_date=form.start_date.data)
+        return redirect(url_for('basic_view.profile'))
+
+    # print(form.caption.data)
+
+    return render_template('addevent.html', title='Профиль', form=form)
 
 
 @basic_view.route('/login', methods=['GET', 'POST'])

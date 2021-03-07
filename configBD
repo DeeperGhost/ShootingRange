@@ -25,12 +25,15 @@
 -struct: string
 
 
-//СОРЕВНОВАНИЯ
+//СОРЕВНОВАНИЯ events
 -id
 -name
+-id_creator
 -разделы
 -start_date
 -описание
+
+//
 
 
 

@@ -2,6 +2,13 @@
 
 {% block content %}
 
-    <p>Welcome, {{username}}!</p>
+    <h1>Соревнования организованые, {{username}}!</h1>
+
+    <p>id-соревнования, id-создателя, название, дата начала, описание</p>
+    {% for i in table %}
+    <p>{{i}}</p>
+    {% endfor %}
+
+    <p><a href="{{ url_for('basic_view.addevent') }}">Добавить соревнвоание</a></p>
 
 {% endblock %}
