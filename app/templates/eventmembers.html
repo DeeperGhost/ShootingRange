@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p><a href="{{ url_for('basic_view.addeventmember', idevent=id_event) }}">Добавить участника</a></p>
+
+<h1>Соревнование -- {{event_name}}</h1>
+
+<br>
+<br>
+<table class="event_table">
+    <tr>
+        <th>id-участника</th>
+        <th>имя участника</th>
+        <th>пол</th>
+        <th>возраст</th>
+        <th>оружие</th>
+        <th>упражнение</th>
+        <th>результат</th>
+        <th>редактировать</th>
+
+
+    </tr>
+    {% for i in table %}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.name_player}}</td>
+            <td>{{i.sex_player}}</td>
+            <td>{{i.age_player}}</td>
+            <td>{{i.gun_player}}</td>
+            <td>{{i.section_player}}</td>
+            <td>{{i.result_player}}</td>
+            <td><a href="">редактировать</a></td>
+        </tr>
+    {% endfor %}
+</table>
+
+
+{% endblock %}

@@ -32,6 +32,8 @@ class USER(UserMixin, db.Model):
 
     rank = db.Column(db.Integer, nullable=True)
 
+    events = db.relationship('EVENTS', backref='author', lazy='dynamic')
+
     def __init__(self, login, email, password_hash, date_user_made):
         self.login = login
         self.email = email

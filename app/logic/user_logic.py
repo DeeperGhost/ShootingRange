@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app.extensions import db
 from app.models.user import USER
 from app.models.events import EVENTS
+from app.models.events_data import EventsData
 
 
 def admin_pg_db():
@@ -25,11 +26,21 @@ def select_events(id_user):
     # t = db.session.query(EVENTS).order_by(EVENTS.rank.desc())
     # t = db.session.query(EVENTS.event_name, EVENTS.create_date ).all()
     if id_user == "all":
-        return db.session.query(EVENTS).order_by(EVENTS.rank.desc()).all()
+        return db.session.query(EVENTS, USER.login).order_by(EVENTS.rank.desc()).filter(EVENTS.id_user == USER.id)
         # return db.session.query(EVENTS).order_by(EVENTS.rank.desc()).filter_by(id_user=id_user)
     else:
         return db.session.query(EVENTS).order_by(EVENTS.rank.desc()).filter_by(id_user=id_user).all()
+        # return db.session.query(EVENTS, USER.login).order_by(EVENTS.rank.desc()).filter(EVENTS.id_user == USER.id).\
+        #     filter_by(id_user=id_user).all()
     # return t
+
+def select_event(id_event):
+    # print(id_event)
+    return db.session.query(EVENTS).order_by(EVENTS.id.desc()).filter_by(id=id_event).first()
+
+def select_event_members(id_event):
+    # print(id_event)
+    return db.session.query(EventsData).order_by(EventsData.id.desc()).filter_by(id_event=id_event).all()
 
 
 def add_events(id_curent_user, event_name, caption, start_date):
@@ -37,6 +48,14 @@ def add_events(id_curent_user, event_name, caption, start_date):
     new_events = EVENTS(id_user=id_curent_user, event_name=event_name, start_date=start_date,
                         create_date=create_date, caption=caption)
     db.session.add(new_events)
+    db.session.commit()
+
+
+def add_event_data(id_event, name_player, sex_player, age_player, gun_player, section_player):
+    # create_date = datetime.strftime(datetime.now(), "%Y.%m.%d %H:%M:%S")
+    new_events_data = EventsData(id_event=id_event, name_player=name_player, sex_player=sex_player,
+                                 age_player=age_player, gun_player=gun_player, section_player=section_player)
+    db.session.add(new_events_data)
     db.session.commit()
 
 

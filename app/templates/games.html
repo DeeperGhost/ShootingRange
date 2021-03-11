@@ -9,7 +9,7 @@
 <table class="event_table">
     <tr>
         <th>id-соревнования</th>
-        <th>id-создателя</th>
+        <th>организатор</th>
         <th>название</th>
         <th>дата начала</th>
         <th>дата создания</th>
@@ -19,18 +19,18 @@
 
     </tr>
     {% for i in table %}
-    <a href="{{ url_for('basic_view.about') }}">
+
     <tr>
-         <td>{{i.id}}</td>
-        <td>{{i.id_user}}</td>
-        <td>{{i.event_name}}</td>
-        <td>{{i.start_date}}</td>
-        <td>{{i.create_date}}</td>
-        <td>{{i.caption}}</td>
-        <td>{{i.event_status}}</td>
-        <td><a href="">статистика</a></td>
+         <td>{{i[0].id}}</td>
+        <td>{{i[1]}}</td>
+        <td>{{i[0].event_name}}</td>
+        <td>{{i[0].start_date}}</td>
+        <td>{{i[0].create_date}}</td>
+        <td>{{i[0].caption}}</td>
+        <td>{{i[0].event_status}}</td>
+        <td><a href="{{ url_for('basic_view.event', idevent=i[0].id) }}">просмотр</a></td>
     </tr>
-    </a>
+
 
     {% endfor %}
 </table>

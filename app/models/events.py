@@ -12,7 +12,7 @@ class EVENTS(UserMixin, db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     # ид создателя соревнования
-    id_user = db.Column(db.Integer, nullable=False)
+    # id_user = db.Column(db.Integer, nullable=False)
     # название соревнования
     event_name = db.Column(db.String, nullable=False)
     # дата начала соревнования
@@ -26,6 +26,12 @@ class EVENTS(UserMixin, db.Model):
     caption = db.Column(db.String, nullable=True)
     # оценка соревнования (ранг)
     rank = db.Column(db.Integer, nullable=True)
+
+    # user_id = db.Column(db.Integer, db.ForeignKey('USERS.id'))
+    id_user = db.Column(db.Integer, db.ForeignKey('USERS.id'), nullable=False)
+
+    events_data = db.relationship('EventsData', backref='author', lazy='dynamic')
+
 
     def __init__(self, id_user, event_name, start_date, create_date, caption):
         self.id_user = id_user
