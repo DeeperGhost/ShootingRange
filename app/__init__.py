@@ -2,7 +2,9 @@ from flask import Flask
 
 from app.extensions import db, migrate, login_manager
 from app.models.user import USER
-# from app.models.events import EVENTS
+from app.models.events import EVENTS
+from app.models.basetable import BaseTable
+from app.models.sextable import SexTable
 
 from config import ConfigObject
 

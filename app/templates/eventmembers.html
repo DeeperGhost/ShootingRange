@@ -2,8 +2,6 @@
 
 {% block content %}
 
-<p><a href="{{ url_for('basic_view.addeventmember', idevent=id_event) }}">Добавить участника</a></p>
-
 <h1>Соревнование -- {{event_name}}</h1>
 
 <br>
@@ -12,28 +10,81 @@
     <tr>
         <th>id-участника</th>
         <th>имя участника</th>
+        <th>город</th>
+        <th>организация</th>
         <th>пол</th>
         <th>возраст</th>
         <th>оружие</th>
         <th>упражнение</th>
         <th>результат</th>
         <th>редактировать</th>
-
-
     </tr>
     {% for i in table %}
         <tr>
             <td>{{i.id}}</td>
             <td>{{i.name_player}}</td>
+            <td>{{i.city_player}}</td>
+            <td>{{i.organization_player}}</td>
             <td>{{i.sex_player}}</td>
             <td>{{i.age_player}}</td>
             <td>{{i.gun_player}}</td>
             <td>{{i.section_player}}</td>
             <td>{{i.result_player}}</td>
-            <td><a href="">редактировать</a></td>
+            <td><a href="">редактировать</a> <a href="{{ url_for('basic_view.eventdataremove', iduser=i.id, idevent=id_event) }}">удалить</a></td>
         </tr>
     {% endfor %}
-</table>
 
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+            <tr>
+                <td></td>
+                <td>{{ form.name_player() }}</td>
+
+                {% for error in form.name_player.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+
+                <td>{{ form.city_player() }}</td>
+
+                {% for error in form.city_player.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+
+                <td>{{ form.organization_player() }}</td>
+
+                {% for error in form.organization_player.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+
+                <td> {{ form.sex_player() }}</td>
+
+                {% for error in form.sex_player.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+
+                <td>  {{ form.age_player() }}</td>
+
+                {% for error in form.age_player.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+
+                <td>  {{ form.gun_player() }}</td>
+
+                {% for error in form.gun_player.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+
+                <td>  {{ form.section_player() }}</td>
+
+                {% for error in form.section_player.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+
+                <td></td>
+
+                <td>  {{ form.submit() }}</td>
+            </tr>
+    </form>
+</table>
 
 {% endblock %}

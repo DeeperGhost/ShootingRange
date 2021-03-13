@@ -38,11 +38,29 @@ def select_event(id_event):
     # print(id_event)
     return db.session.query(EVENTS).order_by(EVENTS.id.desc()).filter_by(id=id_event).first()
 
+
 def select_event_members(id_event):
     # print(id_event)
     return db.session.query(EventsData).order_by(EventsData.id.desc()).filter_by(id_event=id_event).all()
 
 
+# удаление соревнования вместе с его участниками
+def remove_event(id_event):
+    # удаляет участников в соревновании по ид соревнования
+    db.session.query(EventsData).filter_by(id_event=id_event).delete()
+    db.session.commit()
+    # удаляет само пустое соревнование
+    db.session.query(EVENTS).filter_by(id=id_event).delete()
+    db.session.commit()
+
+
+# удаляет строку игрока из таблицы даных игроков
+def remove_event_data(id_user):
+    db.session.query(EventsData).filter_by(id=id_user).delete()
+    db.session.commit()
+
+
+# добавляет соревнование
 def add_events(id_curent_user, event_name, caption, start_date):
     create_date = datetime.strftime(datetime.now(), "%Y.%m.%d %H:%M:%S")
     new_events = EVENTS(id_user=id_curent_user, event_name=event_name, start_date=start_date,
@@ -51,14 +69,18 @@ def add_events(id_curent_user, event_name, caption, start_date):
     db.session.commit()
 
 
-def add_event_data(id_event, name_player, sex_player, age_player, gun_player, section_player):
+# добавляет игрока в соревнование
+def add_event_data(id_event, name_player, sex_player, age_player, gun_player, section_player,
+                   city_player, organization_player):
     # create_date = datetime.strftime(datetime.now(), "%Y.%m.%d %H:%M:%S")
     new_events_data = EventsData(id_event=id_event, name_player=name_player, sex_player=sex_player,
-                                 age_player=age_player, gun_player=gun_player, section_player=section_player)
+                                 age_player=age_player, gun_player=gun_player, section_player=section_player,
+                                 city_player=city_player, organization_player=organization_player)
     db.session.add(new_events_data)
     db.session.commit()
 
 
+# запрос на регистрацию пользователя
 def signup_query(username, email, password):
     user = USER.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
     create_date = str(datetime.now())

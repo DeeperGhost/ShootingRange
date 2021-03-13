@@ -4,3 +4,6 @@
 __pycache__/
 *.idea*
 vcs.xml
+*xlsx
+*xls
+screen.jpg

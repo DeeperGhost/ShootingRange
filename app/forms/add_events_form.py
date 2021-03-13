@@ -2,11 +2,12 @@ import email_validator
 
 from flask_wtf import FlaskForm
 
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, InputRequired
 
 # from wtforms import SubmitField, SelectField, DateField
 from wtforms.fields.html5 import DateField
+from wtforms import validators
 from app.models.user import USER
 
 
@@ -17,9 +18,12 @@ class AddEvent(FlaskForm):
     # опсаине соревнования
     caption = StringField('Описание', validators=[DataRequired()])
 
+
+    # choise = SelectField('Payload Type', choices=[(1,"Group1"),(2,"Group2")])
     # состояния
     # start_date = StringField('Старт соревнования', validators=[DataRequired()])
-    start_date = DateField('Start at', format='%Y-%m-%d')
+    start_date = DateField('начало соревнований', format='%Y-%m-%d')
+    # start_date = DateField('Начало соревнований')
     # end_date = StringField('end_date', validators=[DataRequired()])
     # registration_start = StringField('registration_start', validators=[DataRequired()])
     # registration_end = StringField('registration_end', validators=[DataRequired()])
