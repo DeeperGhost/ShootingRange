@@ -10,11 +10,23 @@ class BaseTable(UserMixin, db.Model):
 
     # ид строки
     id = db.Column(db.Integer, primary_key=True)
+    # ид строки
+    static_id = db.Column(db.Integer, nullable=False)
     # название дисциплины
-    name = db.Column(db.String, nullable=False)
-    # название оружия
+    short_caption = db.Column(db.String, nullable=False)
+    # короткое обозначение оружия
+    gun_short = db.Column(db.String, nullable=False)
+    # полное название оружия
     gun_name = db.Column(db.String, nullable=False)
-    # описание дисциплины
+    # дистанция стрельбы 1
+    distance_1 = db.Column(db.Integer, nullable=False)
+    # дистанция стрельбы 2 если имеется
+    distance_2 = db.Column(db.Integer, nullable=True)
+    # общее количество выстрелов
+    total_shoot = db.Column(db.Integer, nullable=False)
+    # количество серий
+    series = db.Column(db.Integer, nullable=False)
+    # полное описание дисциплины
     caption = db.Column(db.String, nullable=False)
     # единица измерения
     measure = db.Column(db.String, nullable=False)
@@ -22,23 +34,27 @@ class BaseTable(UserMixin, db.Model):
     rank = db.Column(db.String, nullable=False)
     # пол
     id_sex = db.Column(db.Integer,  db.ForeignKey('SexTable.id'), nullable=False)
-    # количесво записей (мишеней*2)
-    number_shoot = db.Column(db.Integer, nullable=False)
-    # необходимое количество балов
-    value = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, name, gun_name, caption, measure, rank, id_sex, number_shoot, value):
+    # необходимое количество балов
+    value = db.Column(db.Float, nullable=False)
+
+    def __init__(self, static_id, short_caption, gun_short, gun_name, distance_1, total_shoot,
+                 series, caption, measure, rank, id_sex, value, distance_2=0):
         # тектовые значения
-        self.name = name
+        self.static_id = static_id
+        self.short_caption = short_caption
+        self.gun_short = gun_short
         self.gun_name = gun_name
+        self.distance_1 = distance_1
+        self.distance_2 = distance_2
+        self.total_shoot = total_shoot
+        self.series = series
         self.caption = caption
         self.measure = measure
         self.rank = rank
-        # численные значения
         self.id_sex = id_sex
-        self.number_shoot = number_shoot
         self.value = value
 
     def __repr__(self):
-        return '%s, %s, %s, %s, %s, %d, %d, %d' % (self.name, self.gun_name, self.caption, self.measure, self.rank,
-                                                   self.id_sex, self.number_shoot, self.value)
+        return '%s, %s, %s, %s, %s, %d, %d' % (self.short_caption, self.gun_short, self.caption,
+                                               self.measure, self.rank, self.id_sex, self.value)

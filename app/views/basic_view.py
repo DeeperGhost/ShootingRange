@@ -12,7 +12,7 @@ from app.forms.login_form import LoginForm, RegistrationForm
 from app.forms.add_events_form import AddEvent
 from app.forms.add_events_data_form import AddEventMember
 
-from app.logic.admin_logic import create_sextable, create_basetable
+from app.logic.admin_logic import create_sextable, create_basetable, rankList, sexlist, shortCaptionList, gunList
 
 from app.logic.user_logic import signup_query
 from app.logic.user_logic import add_events, select_events, add_event_data, select_event_members
@@ -214,5 +214,11 @@ def admin():
     # create_sextable()
     # заролнить справочник базовой таблицы из министерства
     # create_basetable()
+    # rankList()
+
+    # l = gunList()
+    # for i in l:
+    #     print(i[1])
+    # print(gunList())
 
     return render_template('about.html', title='О нас')

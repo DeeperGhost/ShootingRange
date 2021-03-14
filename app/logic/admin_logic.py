@@ -4,6 +4,8 @@ from app.extensions import db
 from app.models.sextable import SexTable
 from app.models.basetable import BaseTable
 
+import csv
+
 
 # Заполнить справочник SexTable
 def create_sextable():
@@ -18,10 +20,32 @@ def create_sextable():
     db.session.commit()
 
 
+# выбирает данные для выпадающего списка полов при добавления пользователя
 def sexlist(name="М"):
     # db.session.query(EVENTS).order_by(EVENTS.id.desc()).filter_by(id=id_event).first()
     return db.session.query(SexTable).all()
     # return db.session.query(SexTable).filter_by(name=name).first()
+
+
+# выбирает данные для выпадающего списка упражнений при добавления пользователя
+def shortCaptionList():
+    return db.session.query(BaseTable.short_caption).distinct(BaseTable.short_caption).all()
+
+
+def gunList():
+    return db.session.query(BaseTable.gun_short, BaseTable.gun_name).distinct(BaseTable.gun_short).all()
+
+
+def rankList():
+    # return db.session.query(BaseTable).distinct(BaseTable.rank).group_by(BaseTable.rank).all()
+    return db.session.query(BaseTable.rank, BaseTable.id_sex).distinct(BaseTable.rank, BaseTable.id_sex).all()
+
+
+def switchsexID(sex):
+    if sex == "М":
+        return 1
+    elif sex == "Ж":
+        return 2
 
 
 # Заполнить справочник BaseTable
@@ -29,13 +53,15 @@ def create_basetable():
     # Удалить все данные из таблицы SexTable
     db.session.query(BaseTable).delete()
     db.session.commit()
-    new_base_node = BaseTable(name="ПП-20", gun_name="пистолет пневматический",
-                              caption="пистолет пневматический, 10 м, 20 выстрелов стоя с упора (штатив)",
-                              measure="Очки", rank="III", id_sex=2, number_shoot=4, value=169)
-    db.session.add(new_base_node)
-    # db.session.commit()
-    new_base_node = BaseTable(name="ПП-20", gun_name="пистолет пневматический",
-                              caption="пистолет пневматический, 10 м, 20 выстрелов стоя с упора (штатив)",
-                              measure="Очки", rank="III", id_sex=1, number_shoot=2, value=173)
-    db.session.add(new_base_node)
+    with open('app/res/databasetable.csv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=";")
+        for row in reader:
+            # print(row.keys())
+            # print(row['id_static'])
+            new_base_node = BaseTable(static_id=row['id'], short_caption=row['short_caption'],
+                                      gun_short=row['gun_short'], gun_name=row['gun_name'],
+                                      distance_1=row['distance_1'], total_shoot=row['total_shoot'],
+                                      series=row['series'], caption=row['caption'], measure=row['measure'],
+                                      rank=row['rank'], id_sex=switchsexID(row['sex']), value=row['value'])
+            db.session.add(new_base_node)
     db.session.commit()

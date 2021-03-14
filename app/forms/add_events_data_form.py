@@ -9,6 +9,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from wtforms.fields.html5 import DateField
 
 from app.logic.admin_logic import sexlist
+from app.logic.admin_logic import shortCaptionList
+from app.logic.admin_logic import gunList
 
 
 class AddEventMember(FlaskForm):
@@ -23,50 +25,22 @@ class AddEventMember(FlaskForm):
     # sex_player = SelectField('пол', choices=[("М", "М"), ("Ж", "Ж")])
     sex_player = SelectField()
 
-    def __init__(self):
-        super(AddEventMember, self).__init__()
-        self.sex_player.choices = [(c.name, c.name_full) for c in sexlist()]
-
-
     # возраст
     age_player = DateField('возраст', format='%Y-%m-%d')
     # оружие
     # gun_player = StringField('оружие', validators=[DataRequired()])
-    gun_player = SelectField('оружие', choices=[("ПП", "пневматический пистолет"),
-                                                      ("МП", "стандартный малокалиберный пистолет"),
-                                                      ("ППП", "скорострельный пневматический пистолет"),
-                                                      ("МПП","произвольный малокалиберный пистолет"),
-                                                      ("КП","крупнокалиберный пистолет или револьвер"),
-                                                      ("ВП","пневматическая винтовка"),
-                                                      ("ВП/ДМ","пневматическая винтовка (по движущейся мишени)"),
-                                                      ("МВ","малокалиберная винтовка"),
-                                                      ("КВ","крупнокалиберная винтовка"),
-                                                      ("КВС","крупнокалиберная винтовка (скоростная стрельба)"),
-                                                      ("КВП","произвольная крупнокалиберная винтовка")])
-
+    gun_player = SelectField()
 
     # секция стрельбы пределать на exercise
-    # section_player = StringField('упражнение', validators=[DataRequired()])
-    section_player = SelectField('упражнение', choices=[("20", "20-выстрелов"),
-                                                        ("30", "30-выстрелов"),
-                                                        ("40", "40-выстрелов"),
-                                                        ("50", "50-выстрелов"),
-                                                        ("60", "60-выстрелов"),
-                                                        ("5", "5 выстрелов"),
-                                                        ("3*20", "3*20-выстрелов"),
-                                                        ("2*40", "2*40-выстрелов")])
+    section_player = SelectField()
 
     # очки
     # result_player = StringField('упражнение', validators=[DataRequired()])
 
     submit = SubmitField('Создать')
 
-    # def validate_username(self, username):
-    #     user = USER.query.filter_by(login=username.data).first()
-    #     if user is not None:
-    #         raise ValidationError('Please use a different username.')
-    #
-    # def validate_email(self, email):
-    #     user = USER.query.filter_by(email=email.data).first()
-    #     if user is not None:
-    #         raise ValidationError('Please use a different email address.')
+    def __init__(self):
+        super(AddEventMember, self).__init__()
+        self.sex_player.choices = [(c.name, c.name_full) for c in sexlist()]
+        self.section_player.choices = [(c[0], c[0]) for c in shortCaptionList()]
+        self.gun_player.choices = [(c[0], c[1]) for c in gunList()]

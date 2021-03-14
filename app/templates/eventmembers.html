@@ -12,8 +12,8 @@
         <th>имя участника</th>
         <th>город</th>
         <th>организация</th>
+        <th>дата рождения</th>
         <th>пол</th>
-        <th>возраст</th>
         <th>оружие</th>
         <th>упражнение</th>
         <th>результат</th>
@@ -25,8 +25,8 @@
             <td>{{i.name_player}}</td>
             <td>{{i.city_player}}</td>
             <td>{{i.organization_player}}</td>
-            <td>{{i.sex_player}}</td>
             <td>{{i.age_player}}</td>
+            <td>{{i.sex_player}}</td>
             <td>{{i.gun_player}}</td>
             <td>{{i.section_player}}</td>
             <td>{{i.result_player}}</td>
@@ -56,15 +56,15 @@
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
 
-                <td> {{ form.sex_player() }}</td>
-
-                {% for error in form.sex_player.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-
                 <td>  {{ form.age_player() }}</td>
 
                 {% for error in form.age_player.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+
+                <td> {{ form.sex_player() }}</td>
+
+                {% for error in form.sex_player.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
 
