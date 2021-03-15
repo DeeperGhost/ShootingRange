@@ -11,6 +11,8 @@ from app.views.base_except_view import base_view_except
 from app.forms.login_form import LoginForm, RegistrationForm
 from app.forms.add_events_form import AddEvent
 from app.forms.add_events_data_form import AddEventMember
+# from app.forms.edit_result_form import EditResult
+from app.forms.edit_result_form import CompanyForm, cont_f
 
 from app.logic.admin_logic import create_sextable, create_basetable, rankList, sexlist, shortCaptionList, gunList
 
@@ -205,6 +207,23 @@ def signup():
         return redirect(url_for('basic_view.login'))
     return render_template('signup.html', title='Регистрация', form=form)
 
+
+# Форма внесения результатов соревнования участника
+@basic_view.route('/editresult/<int:iduser>/<int:idevent>', methods=['GET', 'POST'])
+# @base_view_except
+@login_required
+def editresult(iduser, idevent):
+
+    form = cont_f(entries=5)
+
+    if form.validate_on_submit():
+        for i in form.series.entries:
+            pass
+            # print(i.data['result'])
+        # return redirect(url_for('basic_view.event', idevent=idevent))
+        return redirect(url_for('basic_view.event', idevent=idevent))
+
+    return render_template('editresult.html', title='внести данные', form=form)
 
 # ссылки с административными действиями
 @basic_view.route('/addsextable')

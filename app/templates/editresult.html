@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<br>
+<h1>внести данные</h1>
+
+<form action="" method="post" role="form">
+
+    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
+
+
+    <p>{{form.tens_count.label}}</p>
+    <p>{{form.tens_count}}</p>
+
+    {% for error in form.tens_count.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+
+    {% for i in form.series %}
+    {{i.result.label}}
+    {{i.hidden_tag()}}
+    {{ i.result }}
+    {% endfor %}
+
+    {{ form.submit2() }}
+
+
+
+</form>
+
+{% endblock %}
