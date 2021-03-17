@@ -3,6 +3,9 @@ from datetime import datetime
 from app.extensions import db
 from app.models.sextable import SexTable
 from app.models.basetable import BaseTable
+from app.models.exercise import Exercise
+from app.models.ranktable import RankTable
+from app.models.events_data import EventsData
 
 import csv
 
@@ -31,9 +34,14 @@ def sexlist(name="М"):
 def shortCaptionList():
     return db.session.query(BaseTable.short_caption).distinct(BaseTable.short_caption).all()
 
-
+# список оружия
 def gunList():
     return db.session.query(BaseTable.gun_short, BaseTable.gun_name).distinct(BaseTable.gun_short).all()
+
+
+def exercise_list():
+    return db.session.query(BaseTable.short_caption, BaseTable.series, BaseTable.total_shoot)\
+        .distinct(BaseTable.short_caption, BaseTable.series, BaseTable.total_shoot).all()
 
 
 def rankList():
@@ -51,7 +59,7 @@ def switchsexID(sex):
 # Заполнить справочник BaseTable
 def create_basetable():
     # Удалить все данные из таблицы SexTable
-    db.session.query(BaseTable).delete()
+
     db.session.commit()
     with open('app/res/databasetable.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=";")
@@ -65,3 +73,38 @@ def create_basetable():
                                       rank=row['rank'], id_sex=switchsexID(row['sex']), value=row['value'])
             db.session.add(new_base_node)
     db.session.commit()
+
+
+# Заполнить справочник exercise
+def create_exercise_table():
+    db.session.query(Exercise).delete()
+    db.session.commit()
+    with open('app/res/exercisetable.csv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=";")
+        for row in reader:
+            # print(row.keys())
+            # print(row['id_static'])
+            new_base_node = Exercise(ExerciseID=row['id'], name=row['name'],
+                                     series=row['series'], total_shoot=row['total_shoot'])
+            db.session.add(new_base_node)
+    db.session.commit()
+
+
+# Заполнить справочник ranktable
+def create_rank_table():
+    db.session.query(RankTable).delete()
+    db.session.commit()
+    with open('app/res/ranktable.csv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=";")
+        for row in reader:
+            # print(row.keys())
+            # print(row['id_static'])
+            new_base_node = RankTable(RankID=row['id'], name=row['name'], name_full=row['name_full'], age=row['age'])
+            db.session.add(new_base_node)
+    db.session.commit()
+
+
+
+
+
+

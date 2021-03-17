@@ -6,6 +6,8 @@ from app.extensions import db
 from app.models.user import USER
 from app.models.events import EVENTS
 from app.models.events_data import EventsData
+from app.models.exercise import Exercise
+from app.models.exercise_data import ExerciseData
 
 
 def admin_pg_db():
@@ -56,6 +58,9 @@ def remove_event(id_event):
 
 # удаляет строку игрока из таблицы даных игроков
 def remove_event_data(id_user):
+    db.session.query(ExerciseData).filter_by(EventsDataID=id_user).delete()
+    db.session.commit()
+
     db.session.query(EventsData).filter_by(id=id_user).delete()
     db.session.commit()
 
@@ -70,13 +75,30 @@ def add_events(id_curent_user, event_name, caption, start_date):
 
 
 # добавляет игрока в соревнование
-def add_event_data(id_event, name_player, sex_player, age_player, gun_player, section_player,
+def add_event_data(id_event,ExerciseID,  name_player, sex_player, age_player, gun_player, section_player,
                    city_player, organization_player):
     # create_date = datetime.strftime(datetime.now(), "%Y.%m.%d %H:%M:%S")
-    new_events_data = EventsData(id_event=id_event, name_player=name_player, sex_player=sex_player,
+    new_events_data = EventsData(id_event=id_event,ExerciseID=ExerciseID, name_player=name_player, sex_player=sex_player,
                                  age_player=age_player, gun_player=gun_player, section_player=section_player,
                                  city_player=city_player, organization_player=organization_player)
     db.session.add(new_events_data)
+    db.session.commit()
+
+
+# добавляет игрока в соревнование
+def set_exercise_data(EventsDataID, ex1=0, ex2=0, ex3=0, ex4=0, ex5=0, ex6=0, ex7=0, ex8=0, ex9=0, ex10=0, tens_count=0):
+    # create_date = datetime.strftime(datetime.now(), "%Y.%m.%d %H:%M:%S")
+    ExerciseData.query.filter_by(EventsDataID=EventsDataID).delete()
+    db.session.commit()
+    new_exercise_data = ExerciseData(EventsDataID=EventsDataID, ex1=ex1, ex2=ex2, ex3=ex3, ex4=ex4, ex5=ex5, ex6=ex6,
+                                     ex7=ex7, ex8=ex8, ex9=ex9, ex10=ex10, tens_count=tens_count)
+    db.session.add(new_exercise_data)
+    db.session.commit()
+
+    # переприсваевывает значения результатов из таблицы результатов в таблицу данных соревнования (костыль)
+    EvData = EventsData.query.filter_by(id=EventsDataID).first()
+    ExData = ExerciseData.query.filter_by(EventsDataID=EventsDataID).first()
+    EvData.result_player = ExData.result_player
     db.session.commit()
 
 
@@ -104,3 +126,18 @@ def signup_query(username, email, password):
 #         password = USER.query.filter_by(password=password).first()
 #         if email and password:
 #             return 1
+
+
+# переименовать функции 1 выдает количество выстрелов а также серии по ид упражнения для формы заполения результатов
+def parametr_exercise(id):
+    param = db.session.query(EventsData.ExerciseID).filter_by(id=id).first()
+    param2 = db.session.query(Exercise.total_shoot, Exercise.series).filter_by(ExerciseID=param).first()
+    return param2
+# переименовать функции 2 выдает ид упражнения по имени для формы добаления участника
+def parametr_exercise2(name):
+    return db.session.query(Exercise.ExerciseID).filter_by(name=name).first()[0]
+
+def select_result(id):
+    t1 = db.session.query(ExerciseData).filter_by(EventsDataID=id).first()
+    t2 = db.session.query(EventsData).filter_by(id=id).first()
+    return t1,t2

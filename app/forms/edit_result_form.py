@@ -5,28 +5,20 @@ from wtforms import SubmitField
 
 from wtforms import FieldList, FormField
 from wtforms.validators import ValidationError, DataRequired
-
-# class EditResult(FlaskForm):
-#     tens_count = IntegerField(label="Количество 10")
-#     submit = SubmitField('Создать')
+from wtforms.validators import NumberRange
+from wtforms.validators import InputRequired, Length
 
 
 class LocationForm(FlaskForm):
-    result = IntegerField('results', validators=[DataRequired()])
-
-
-class CompanyForm(FlaskForm):
-    series = FieldList(FormField(LocationForm), min_entries=5)
-    tens_count = IntegerField('количество 10', validators=[DataRequired()])
-
-    submit2 = SubmitField('Сохранить1')
+    result = IntegerField('результат',
+                          validators=[NumberRange(min=0, max=100, message='Неверное значение')], default=0)
 
 
 def cont_f(entries):
-
     class DinamicResultForm(FlaskForm):
         series = FieldList(FormField(LocationForm), min_entries=entries)
-        tens_count = IntegerField('количество 10')
+        tens_count = IntegerField('количество 10',
+                                  validators=[NumberRange(min=0, max=100, message='Неверное количество 10 балов')],default=0)
 
         submit2 = SubmitField('Сохранить')
 

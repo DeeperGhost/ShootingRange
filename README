@@ -3,32 +3,3 @@
     проведение соревнований и аналитика статистики
     сайт для вне
     распознование мишеней
-
-<form action="" method="post" role="form">
-    {{ form.hidden_tag() }}
-    {{ form.tens_count() }}
-    {{ form.series() }}
-    {{ form.submit2() }}
-
-</form>
-
-
-
-<form action="" method="post" role="form">
-
-    {{ form.csrf_token }}
-    {{ form.hidden_tag() }}
-
-
-    <p>{{form.tens_count.label}}</p>
-    <p>{{form.tens_count}}</p>
-
-    {% for l in form.series %}
-    {{ l.form.result }}
-    {% endfor %}
-
-    {{ form.submit2() }}
-
-
-
-</form>

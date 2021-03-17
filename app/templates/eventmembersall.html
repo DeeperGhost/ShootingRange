@@ -28,7 +28,8 @@
         <td>{{i.sex_player}}</td>
         <td>{{i.gun_player}}</td>
         <td>{{i.section_player}}</td>
-        <td>{{i.result_player}}</td>
+        <td><a href="{{ url_for('basic_view.result', id=i.id) }}">{{i.result_player}}</a></td>
+
     </tr>
     {% endfor %}
 </table>

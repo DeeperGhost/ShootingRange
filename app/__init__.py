@@ -5,6 +5,8 @@ from app.models.user import USER
 from app.models.events import EVENTS
 from app.models.basetable import BaseTable
 from app.models.sextable import SexTable
+from app.models.exercise import Exercise
+from app.models.exercise_data import ExerciseData
 
 from config import ConfigObject
 

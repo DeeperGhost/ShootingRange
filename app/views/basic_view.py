@@ -12,13 +12,20 @@ from app.forms.login_form import LoginForm, RegistrationForm
 from app.forms.add_events_form import AddEvent
 from app.forms.add_events_data_form import AddEventMember
 # from app.forms.edit_result_form import EditResult
-from app.forms.edit_result_form import CompanyForm, cont_f
+from app.forms.edit_result_form import cont_f
 
-from app.logic.admin_logic import create_sextable, create_basetable, rankList, sexlist, shortCaptionList, gunList
+from app.logic.admin_logic import rankList, sexlist, shortCaptionList, gunList, exercise_list
+from app.logic.admin_logic import create_exercise_table
+from app.logic.admin_logic import create_sextable
+from app.logic.admin_logic import create_basetable
+from app.logic.admin_logic import create_rank_table
 
 from app.logic.user_logic import signup_query
 from app.logic.user_logic import add_events, select_events, add_event_data, select_event_members
 from app.logic.user_logic import select_event, remove_event, remove_event_data
+from app.logic.user_logic import parametr_exercise, parametr_exercise2
+from app.logic.user_logic import set_exercise_data
+from app.logic.user_logic import select_result
 
 from app.models.user import USER
 
@@ -94,7 +101,8 @@ def event(idevent):
 
     form = AddEventMember()
     if form.validate_on_submit():
-        add_event_data(id_event=idevent, name_player=form.name_player.data, sex_player=form.sex_player.data,
+        exID = parametr_exercise2(form.section_player.data)
+        add_event_data(id_event=idevent, ExerciseID=exID, name_player=form.name_player.data, sex_player=form.sex_player.data,
                        age_player=form.age_player.data, gun_player=form.gun_player.data,
                        section_player=form.section_player.data, city_player=form.city_player.data,
                        organization_player=form.organization_player.data)
@@ -214,16 +222,41 @@ def signup():
 @login_required
 def editresult(iduser, idevent):
 
-    form = cont_f(entries=5)
-
+    entries, series = parametr_exercise(iduser)
+    # print(entries, series)
+    form = cont_f(entries=entries/10)
     if form.validate_on_submit():
+        lst_ex = []
         for i in form.series.entries:
             pass
+            lst_ex.append(i.data['result'])
             # print(i.data['result'])
+        while len(lst_ex) < 10:
+            lst_ex.append(0)
+        # print(lst_ex)
+        # print(len(lst_ex))
+
+        set_exercise_data(EventsDataID=iduser, ex1=lst_ex[0], ex2=lst_ex[1], ex3=lst_ex[2], ex4=lst_ex[3],
+                          ex5=lst_ex[4], ex6=lst_ex[5], ex7=lst_ex[6], ex8=lst_ex[7], ex9=lst_ex[8], ex10=lst_ex[9],
+                          tens_count=form.tens_count.data)
+
         # return redirect(url_for('basic_view.event', idevent=idevent))
         return redirect(url_for('basic_view.event', idevent=idevent))
 
-    return render_template('editresult.html', title='внести данные', form=form)
+    return render_template('editresult.html', title='внести данные', form=form, series=series)
+
+# показывает результаты участника
+@basic_view.route('/result/<int:id>')
+# @base_view_except
+def result(id):
+    t1, t2 = select_result(id)
+    entries, series = parametr_exercise(id)
+    # t3 = str(t1).split(',')
+    # # for i in t3:
+    # #     print(i)
+    # print(entries,series)
+    return render_template('result.html', title='резултат', t1=t1,t2=t2)
+
 
 # ссылки с административными действиями
 @basic_view.route('/addsextable')
@@ -234,10 +267,11 @@ def admin():
     # заролнить справочник базовой таблицы из министерства
     # create_basetable()
     # rankList()
-
-    # l = gunList()
+    # create_exercise_table()
+    create_rank_table()
+    # l = exercise_list()
     # for i in l:
-    #     print(i[1])
+    #     print(i)
     # print(gunList())
 
     return render_template('about.html', title='О нас')

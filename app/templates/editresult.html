@@ -5,28 +5,51 @@
 <br>
 <h1>внести данные</h1>
 
+<style type="text/css">
+        input {
+            width: 80px;
+        }
+
+}
+
+    </style>
+
 <form action="" method="post" role="form">
 
     {{ form.csrf_token }}
     {{ form.hidden_tag() }}
 
 
-    <p>{{form.tens_count.label}}</p>
-    <p>{{form.tens_count}}</p>
+
+
 
     {% for error in form.tens_count.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
-
-    {% for i in form.series %}
-    {{i.result.label}}
-    {{i.hidden_tag()}}
-    {{ i.result }}
+    {% for error in form.series.errors %}
+    <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
 
-    {{ form.submit2() }}
-
-
+    <table class="event_table">
+    <tr>
+        {% for i in form.series %}
+        <th>{{i.result.label}}</th>
+        {{i.hidden_tag()}}
+        {% endfor %}
+        <th>{{form.tens_count.label}}</th>
+        <th>отправить</th>
+    </tr>
+    <tr>
+        {% for i in form.series %}
+        <th>{{ i.result() }}</th>
+        {% endfor %}
+        <th>{{form.tens_count()}}</th>
+        <th>{{ form.submit2() }}</th>
+    </tr>
+    </table>
+    {% for j in range(series)%}
+    <p>{{j}}</p>
+    {% endfor %}
 
 </form>
 
