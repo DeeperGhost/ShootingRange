@@ -14,6 +14,9 @@ class EventsData(UserMixin, db.Model):
     # ид упражнения
     ExerciseID = db.Column(db.Integer, db.ForeignKey('Exercise.ExerciseID'), nullable=False)
 
+    # ид достижения участника
+    RankID = db.Column(db.Integer, db.ForeignKey('RankTable.RankID'), nullable=False)
+
     # id_event = db.Column(db.Integer, nullable=False)
     # название соревнования
     name_player = db.Column(db.String, nullable=False)
@@ -38,10 +41,11 @@ class EventsData(UserMixin, db.Model):
 
     ExerciseData = db.relationship('ExerciseData', backref='resultData', lazy='dynamic')
 
-    def __init__(self, id_event, ExerciseID, name_player, sex_player, age_player, gun_player,
+    def __init__(self, id_event, ExerciseID, RankID, name_player, sex_player, age_player, gun_player,
                  section_player, city_player, organization_player):
         self.id_event = id_event
         self.ExerciseID = ExerciseID
+        self.RankID = RankID
         self.name_player = name_player
         self.sex_player = sex_player
         self.age_player = age_player

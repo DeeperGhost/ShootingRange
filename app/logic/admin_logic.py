@@ -44,9 +44,13 @@ def exercise_list():
         .distinct(BaseTable.short_caption, BaseTable.series, BaseTable.total_shoot).all()
 
 
+# def rankList():
+#     # return db.session.query(BaseTable).distinct(BaseTable.rank).group_by(BaseTable.rank).all()
+#     return db.session.query(BaseTable.rank, BaseTable.id_sex).distinct(BaseTable.rank, BaseTable.id_sex).all()
+
 def rankList():
     # return db.session.query(BaseTable).distinct(BaseTable.rank).group_by(BaseTable.rank).all()
-    return db.session.query(BaseTable.rank, BaseTable.id_sex).distinct(BaseTable.rank, BaseTable.id_sex).all()
+    return db.session.query(RankTable.RankID, RankTable.name).distinct(RankTable.RankID, RankTable.name).all()
 
 
 def switchsexID(sex):

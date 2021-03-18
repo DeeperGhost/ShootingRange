@@ -102,8 +102,9 @@ def event(idevent):
     form = AddEventMember()
     if form.validate_on_submit():
         exID = parametr_exercise2(form.section_player.data)
-        add_event_data(id_event=idevent, ExerciseID=exID, name_player=form.name_player.data, sex_player=form.sex_player.data,
-                       age_player=form.age_player.data, gun_player=form.gun_player.data,
+        add_event_data(id_event=idevent, ExerciseID=exID, RankID=form.rank_player.data,
+                       name_player=form.name_player.data, sex_player=form.sex_player.data,
+                       age_player=form.age_player.data, gun_player="GUN",
                        section_player=form.section_player.data, city_player=form.city_player.data,
                        organization_player=form.organization_player.data)
         return redirect(url_for('basic_view.event', idevent=idevent))
@@ -117,6 +118,7 @@ def event(idevent):
 # @login_required
 def eventforall(idevent):
     table = select_event_members(idevent)
+
     event_name = select_event(idevent).event_name
     # print(event_name)
     return render_template('eventmembersall.html', title='Участники', event_name=event_name, table=table)
@@ -148,8 +150,10 @@ def eventdataremove(iduser, idevent):
     # table = select_events(str(current_user.id))
     form = AddEventMember()
     if form.validate_on_submit():
-        add_event_data(id_event=idevent, name_player=form.name_player.data, sex_player=form.sex_player.data,
-                       age_player=form.age_player.data, gun_player=form.gun_player.data,
+        exID = parametr_exercise2(form.section_player.data)
+        add_event_data(id_event=idevent, ExerciseID=exID, RankID=form.rank_player.data,
+                       name_player=form.name_player.data, sex_player=form.sex_player.data,
+                       age_player=form.age_player.data, gun_player="GUN",
                        section_player=form.section_player.data, city_player=form.city_player.data,
                        organization_player=form.organization_player.data)
         return redirect(url_for('basic_view.event', idevent=idevent))
@@ -268,10 +272,6 @@ def admin():
     # create_basetable()
     # rankList()
     # create_exercise_table()
-    create_rank_table()
-    # l = exercise_list()
-    # for i in l:
-    #     print(i)
-    # print(gunList())
+    # create_rank_table()
 
     return render_template('about.html', title='О нас')

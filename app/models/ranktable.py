@@ -19,6 +19,8 @@ class RankTable(UserMixin, db.Model):
     # возpаст с которого доступен
     age = db.Column(db.Integer, nullable=False)
 
+    EventsData = db.relationship('EventsData', backref='EventsData', lazy='dynamic')
+
     def __init__(self, RankID, name, name_full, age):
         self.RankID = RankID
         self.name = name

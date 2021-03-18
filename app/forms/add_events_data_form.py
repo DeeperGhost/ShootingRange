@@ -11,6 +11,7 @@ from wtforms.fields.html5 import DateField
 from app.logic.admin_logic import sexlist
 from app.logic.admin_logic import shortCaptionList
 from app.logic.admin_logic import gunList
+from app.logic.admin_logic import rankList
 
 
 class AddEventMember(FlaskForm):
@@ -29,7 +30,7 @@ class AddEventMember(FlaskForm):
     age_player = DateField('возраст', format='%Y-%m-%d')
     # оружие
     # gun_player = StringField('оружие', validators=[DataRequired()])
-    gun_player = SelectField()
+    rank_player = SelectField()
 
     # секция стрельбы пределать на exercise
     section_player = SelectField()
@@ -43,4 +44,4 @@ class AddEventMember(FlaskForm):
         super(AddEventMember, self).__init__()
         self.sex_player.choices = [(c.name, c.name_full) for c in sexlist()]
         self.section_player.choices = [(c[0], c[0]) for c in shortCaptionList()]
-        self.gun_player.choices = [(c[0], c[1]) for c in gunList()]
+        self.rank_player.choices = [(c[0], c[1]) for c in rankList()]

@@ -14,21 +14,21 @@
         <th>организация</th>
         <th>возраст</th>
         <th>пол</th>
-        <th>оружие</th>
+        <th>Разряд</th>
         <th>упражнение</th>
         <th>результат</th>
     </tr>
     {% for i in table %}
     <tr>
-        <td>{{i.id}}</td>
-        <td>{{i.name_player}}</td>
-        <td>{{i.city_player}}</td>
-        <td>{{i.organization_player}}</td>
-        <td>{{i.age_player}}</td>
-        <td>{{i.sex_player}}</td>
-        <td>{{i.gun_player}}</td>
-        <td>{{i.section_player}}</td>
-        <td><a href="{{ url_for('basic_view.result', id=i.id) }}">{{i.result_player}}</a></td>
+        <td>{{i[0].id}}</td>
+        <td>{{i[0].name_player}}</td>
+        <td>{{i[0].city_player}}</td>
+        <td>{{i[0].organization_player}}</td>
+        <td>{{i[0].age_player}}</td>
+        <td>{{i[0].sex_player}}</td>
+        <td>{{i[1]}}</td>
+        <td>{{i[0].section_player}}</td>
+        <td><a href="{{ url_for('basic_view.result', id=i[0].id) }}">{{i[0].result_player}}</a></td>
 
     </tr>
     {% endfor %}

@@ -8,6 +8,7 @@ from app.models.events import EVENTS
 from app.models.events_data import EventsData
 from app.models.exercise import Exercise
 from app.models.exercise_data import ExerciseData
+from app.models.ranktable import RankTable
 
 
 def admin_pg_db():
@@ -36,6 +37,7 @@ def select_events(id_user):
         #     filter_by(id_user=id_user).all()
     # return t
 
+
 def select_event(id_event):
     # print(id_event)
     return db.session.query(EVENTS).order_by(EVENTS.id.desc()).filter_by(id=id_event).first()
@@ -43,7 +45,13 @@ def select_event(id_event):
 
 def select_event_members(id_event):
     # print(id_event)
-    return db.session.query(EventsData).order_by(EventsData.id.desc()).filter_by(id_event=id_event).all()
+    # return db.session.query(EVENTS, USER.login).order_by(EVENTS.rank.desc()).filter(EVENTS.id_user == USER.id)
+    # return db.session.query(EventsData).filter_by(id_event=id_event).all()
+    # return db.session.query(EventsData, RankTable.name).filter_by(id_event=id_event).all()
+    return db.session.query(EventsData, RankTable.name)\
+        .join(RankTable)\
+        .order_by(EventsData.ExerciseID, EventsData.result_player.desc())\
+        .filter(EventsData.id_event == id_event).all()
 
 
 # удаление соревнования вместе с его участниками
@@ -75,12 +83,13 @@ def add_events(id_curent_user, event_name, caption, start_date):
 
 
 # добавляет игрока в соревнование
-def add_event_data(id_event,ExerciseID,  name_player, sex_player, age_player, gun_player, section_player,
+def add_event_data(id_event,ExerciseID, RankID,  name_player, sex_player, age_player, gun_player, section_player,
                    city_player, organization_player):
     # create_date = datetime.strftime(datetime.now(), "%Y.%m.%d %H:%M:%S")
-    new_events_data = EventsData(id_event=id_event,ExerciseID=ExerciseID, name_player=name_player, sex_player=sex_player,
-                                 age_player=age_player, gun_player=gun_player, section_player=section_player,
-                                 city_player=city_player, organization_player=organization_player)
+    new_events_data = EventsData(id_event=id_event, ExerciseID=ExerciseID, RankID=RankID, name_player=name_player,
+                                 sex_player=sex_player, age_player=age_player, gun_player=gun_player,
+                                 section_player=section_player, city_player=city_player,
+                                 organization_player=organization_player)
     db.session.add(new_events_data)
     db.session.commit()
 
