@@ -1,4 +1,5 @@
 import requests
+from flask import jsonify
 from datetime import date
 
 from flask import Blueprint, render_template, json, request
@@ -51,6 +52,8 @@ def index():
     stri  = "https://api.openweathermap.org/data/2.5/weather?q=vladivostok&appid=4f700615ae41e5d6e83b562a95e7c16f&lang=ru"
     response = requests.get(stri)
     temp = json.loads(response.text)
+    # print(temp)
+
     return render_template('index.html', temp=temp, title='Новости')
 
 
@@ -275,3 +278,21 @@ def admin():
     # create_rank_table()
 
     return render_template('about.html', title='О нас')
+
+# ссылки с административными действиями
+@basic_view.route('/test')
+@base_view_except
+def test():
+    # заполнить справочник с полами
+    # create_sextable()
+    # заролнить справочник базовой таблицы из министерства
+    # create_basetable()
+    # rankList()
+    # create_exercise_table()
+    # create_rank_table()
+
+    return jsonify(    {
+        "username": "admin",
+        "email": "admin@localhost",
+        "id": 42
+    })

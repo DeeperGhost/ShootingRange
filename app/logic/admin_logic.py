@@ -6,6 +6,7 @@ from app.models.basetable import BaseTable
 from app.models.exercise import Exercise
 from app.models.ranktable import RankTable
 from app.models.events_data import EventsData
+from app.models.exercise_data import ExerciseData
 
 import csv
 
@@ -81,15 +82,35 @@ def create_basetable():
 
 # Заполнить справочник exercise
 def create_exercise_table():
+    db.session.query(ExerciseData).delete()
+    db.session.query(EventsData).delete()
     db.session.query(Exercise).delete()
+
     db.session.commit()
     with open('app/res/exercisetable.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=";")
         for row in reader:
             # print(row.keys())
             # print(row['id_static'])
-            new_base_node = Exercise(ExerciseID=row['id'], name=row['name'],
-                                     series=row['series'], total_shoot=row['total_shoot'])
+            dist = []
+            dist.append(row['distance1'])
+            dist.append(row['distance2'])
+            rank_values = []
+            rank_values.append(row['msmk_m'])
+            rank_values.append(row['msmk_f'])
+            rank_values.append(row['ms_m'])
+            rank_values.append(row['ms_f'])
+            rank_values.append(row['kms_m'])
+            rank_values.append(row['kms_f'])
+            rank_values.append(row['1_m'])
+            rank_values.append(row['1_f'])
+            rank_values.append(row['2_m'])
+            rank_values.append(row['2_f'])
+            rank_values.append(row['3_f'])
+            rank_values.append(row['3_f'])
+            new_base_node = Exercise(ExerciseID=row['id'], name=row['name'], name_gun=row['name_gun'],dist=dist,
+                                     series=row['series'], total_shoot=row['total_shoot'], caption=row['caption'],
+                                     measure=row['measure'], rank_values=rank_values)
             db.session.add(new_base_node)
     db.session.commit()
 
