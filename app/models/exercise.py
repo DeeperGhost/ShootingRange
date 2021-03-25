@@ -68,6 +68,10 @@ class Exercise(UserMixin, db.Model):
         self.third_m = rank_values[10]
         self.third_f = rank_values[11]
 
+    def list_of_value(self):
+        lst = [self.msmk_m, self.msmk_f, self.ms_m, self.ms_f, self.kms_m, self.kms_f, self.first_m,
+                self.first_f, self.second_m, self.second_f, self.third_m, self.third_f]
+        return lst
 
     def __repr__(self):
         return '%d, %s, %d, %d' % (self.ExerciseID, self.name, self.series, self.total_shoot)

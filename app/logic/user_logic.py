@@ -48,11 +48,11 @@ def select_event_members(id_event):
     # return db.session.query(EVENTS, USER.login).order_by(EVENTS.rank.desc()).filter(EVENTS.id_user == USER.id)
     # return db.session.query(EventsData).filter_by(id_event=id_event).all()
     # return db.session.query(EventsData, RankTable.name).filter_by(id_event=id_event).all()
-    return db.session.query(EventsData, RankTable.name)\
-        .join(RankTable)\
-        .order_by(EventsData.ExerciseID, EventsData.result_player.desc())\
-        .filter(EventsData.id_event == id_event).all()
 
+    return db.session.query(EventsData, RankTable.name) \
+        .join(RankTable) \
+        .order_by(EventsData.ExerciseID, EventsData.result_player.desc()) \
+        .filter(EventsData.id_event == id_event).all()
 
 # удаление соревнования вместе с его участниками
 def remove_event(id_event):
@@ -108,7 +108,37 @@ def set_exercise_data(EventsDataID, ex1=0, ex2=0, ex3=0, ex4=0, ex5=0, ex6=0, ex
     EvData = EventsData.query.filter_by(id=EventsDataID).first()
     ExData = ExerciseData.query.filter_by(EventsDataID=EventsDataID).first()
     EvData.result_player = ExData.result_player
+    EvData.reached_rank = id_reached_rank(EventsDataID)
     db.session.commit()
+
+
+# вычисляет ид достигнутого разряда
+def id_reached_rank(EventsDataID):
+    EvData = EventsData.query.filter_by(id=EventsDataID).first()
+    ExData = ExerciseData.query.filter_by(EventsDataID=EventsDataID).first()
+    # print(EvData.gun_player, EvData.sex_player)
+    Ex = Exercise.query.filter_by(ExerciseID=EvData.ExerciseID).first().list_of_value()
+    result = ExData.result_player
+    if EvData.sex_player == "М":
+        s = 0
+    else:
+        s = 1
+    # print(s)
+    for i in range(s, len(Ex), 2):
+        if result >= Ex[i] and Ex[i] != 0:
+            if i == 10 or i == 11:
+                return "III"
+            if i == 8 or i == 9:
+                return "II"
+            if i == 6 or i == 7:
+                return "I"
+            if i == 4 or i == 5:
+                return "КМС"
+            if i == 2 or i == 3:
+                return "МС"
+            if i == 0 or i == 1:
+                return "МСМК"
+    return "Б/Р"
 
 
 # запрос на регистрацию пользователя
@@ -142,9 +172,16 @@ def parametr_exercise(id):
     param = db.session.query(EventsData.ExerciseID).filter_by(id=id).first()
     param2 = db.session.query(Exercise.total_shoot, Exercise.series).filter_by(ExerciseID=param).first()
     return param2
-# переименовать функции 2 выдает ид упражнения по имени для формы добаления участника
-def parametr_exercise2(name):
+# возвращвет ид упражнение по имени
+def _id_exercise_by_name(name):
+    # print(db.session.query(Exercise.ExerciseID, Exercise.name_gun).filter_by(name=name).first()[1])
     return db.session.query(Exercise.ExerciseID).filter_by(name=name).first()[0]
+
+# возвращвет название оружия по имени
+def _gun_exercise_by_name(name):
+    print(db.session.query(Exercise.name_gun).filter_by(name=name).first()[0])
+    return db.session.query(Exercise.name_gun).filter_by(name=name).first()[0]
+
 
 def select_result(id):
     t1 = db.session.query(ExerciseData).filter_by(EventsDataID=id).first()

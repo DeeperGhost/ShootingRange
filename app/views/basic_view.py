@@ -24,7 +24,7 @@ from app.logic.admin_logic import create_rank_table
 from app.logic.user_logic import signup_query
 from app.logic.user_logic import add_events, select_events, add_event_data, select_event_members
 from app.logic.user_logic import select_event, remove_event, remove_event_data
-from app.logic.user_logic import parametr_exercise, parametr_exercise2
+from app.logic.user_logic import parametr_exercise, _id_exercise_by_name, _gun_exercise_by_name
 from app.logic.user_logic import set_exercise_data
 from app.logic.user_logic import select_result
 
@@ -100,14 +100,18 @@ def profile():
 def event(idevent):
     table = select_event_members(idevent)
     event_name = select_event(idevent).event_name
+
+    print(current_user.get_id(), 'id')
+    print(idevent, 'id')
     # print(event_name)
 
     form = AddEventMember()
     if form.validate_on_submit():
-        exID = parametr_exercise2(form.section_player.data)
-        add_event_data(id_event=idevent, ExerciseID=exID, RankID=form.rank_player.data,
+        exercise_id = _id_exercise_by_name(form.section_player.data)
+        gun_name = _gun_exercise_by_name(form.section_player.data)
+        add_event_data(id_event=idevent, ExerciseID=exercise_id, RankID=form.rank_player.data,
                        name_player=form.name_player.data, sex_player=form.sex_player.data,
-                       age_player=form.age_player.data, gun_player="GUN",
+                       age_player=form.age_player.data, gun_player=gun_name,
                        section_player=form.section_player.data, city_player=form.city_player.data,
                        organization_player=form.organization_player.data)
         return redirect(url_for('basic_view.event', idevent=idevent))
@@ -153,15 +157,19 @@ def eventdataremove(iduser, idevent):
     # table = select_events(str(current_user.id))
     form = AddEventMember()
     if form.validate_on_submit():
-        exID = parametr_exercise2(form.section_player.data)
-        add_event_data(id_event=idevent, ExerciseID=exID, RankID=form.rank_player.data,
+
+        exercise_id = _id_exercise_by_name(form.section_player.data)
+        gun_name = _gun_exercise_by_name(form.section_player.data)
+
+        add_event_data(id_event=idevent, ExerciseID=exercise_id, RankID=form.rank_player.data,
                        name_player=form.name_player.data, sex_player=form.sex_player.data,
-                       age_player=form.age_player.data, gun_player="GUN",
+                       age_player=form.age_player.data, gun_player=gun_name,
                        section_player=form.section_player.data, city_player=form.city_player.data,
                        organization_player=form.organization_player.data)
         return redirect(url_for('basic_view.event', idevent=idevent))
 
-    return render_template('eventmembers.html', title='Участники', event_name=event_name, id_event=idevent, table=table, form=form)
+    return render_template('eventmembers.html', title='Участники', event_name=event_name, id_event=idevent,
+                           table=table, form=form)
 
 
 # вью длля добавления соревнования из профиля

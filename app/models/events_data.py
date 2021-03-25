@@ -38,6 +38,8 @@ class EventsData(UserMixin, db.Model):
     # разряд участника
 
     result_player = db.Column(db.Integer, nullable=True)
+    # достижения которое достиг участника
+    reached_rank = db.Column(db.String, nullable=True)
 
     ExerciseData = db.relationship('ExerciseData', backref='resultData', lazy='dynamic')
 
