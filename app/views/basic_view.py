@@ -101,8 +101,8 @@ def event(idevent):
     table = select_event_members(idevent)
     event_name = select_event(idevent).event_name
 
-    print(current_user.get_id(), 'id')
-    print(idevent, 'id')
+    # print(current_user.get_id(), 'id')
+    # print(idevent, 'id')
     # print(event_name)
 
     form = AddEventMember()

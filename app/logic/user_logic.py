@@ -56,6 +56,10 @@ def select_event_members(id_event):
 
 # удаление соревнования вместе с его участниками
 def remove_event(id_event):
+    # Удаляет результаты учатников соревнования
+    t = db.session.query(EventsData.id).filter_by(id_event=id_event).all()
+    [remove_event_data(i) for i in t]
+
     # удаляет участников в соревновании по ид соревнования
     db.session.query(EventsData).filter_by(id_event=id_event).delete()
     db.session.commit()
@@ -109,6 +113,7 @@ def set_exercise_data(EventsDataID, ex1=0, ex2=0, ex3=0, ex4=0, ex5=0, ex6=0, ex
     ExData = ExerciseData.query.filter_by(EventsDataID=EventsDataID).first()
     EvData.result_player = ExData.result_player
     EvData.reached_rank = id_reached_rank(EventsDataID)
+    db.session.commit()
     db.session.commit()
 
 
@@ -179,7 +184,7 @@ def _id_exercise_by_name(name):
 
 # возвращвет название оружия по имени
 def _gun_exercise_by_name(name):
-    print(db.session.query(Exercise.name_gun).filter_by(name=name).first()[0])
+    # print(db.session.query(Exercise.name_gun).filter_by(name=name).first()[0])
     return db.session.query(Exercise.name_gun).filter_by(name=name).first()[0]
 
 
