@@ -29,13 +29,9 @@ def select_events(id_user):
     # t = db.session.query(EVENTS).order_by(EVENTS.rank.desc())
     # t = db.session.query(EVENTS.event_name, EVENTS.create_date ).all()
     if id_user == "all":
-        return db.session.query(EVENTS, USER.login).order_by(EVENTS.rank.desc()).filter(EVENTS.id_user == USER.id)
-        # return db.session.query(EVENTS).order_by(EVENTS.rank.desc()).filter_by(id_user=id_user)
+        return db.session.query(EVENTS, USER.username).order_by(EVENTS.rank.desc()).filter(EVENTS.id_user == USER.id)
     else:
         return db.session.query(EVENTS).order_by(EVENTS.rank.desc()).filter_by(id_user=id_user).all()
-        # return db.session.query(EVENTS, USER.login).order_by(EVENTS.rank.desc()).filter(EVENTS.id_user == USER.id).\
-        #     filter_by(id_user=id_user).all()
-    # return t
 
 
 def select_event(id_event):

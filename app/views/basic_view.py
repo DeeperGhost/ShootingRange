@@ -1,12 +1,13 @@
 import requests
 
+
 from flask import jsonify
 from datetime import date
 
 from flask import Blueprint, render_template, json, request
 from flask import flash, redirect, url_for
 
-from flask_security import login_required
+from flask_security import login_required, roles_required, roles_accepted
 from flask_login import current_user, login_user
 
 
@@ -23,6 +24,7 @@ from app.logic.admin_logic import create_exercise_table
 from app.logic.admin_logic import create_sextable
 from app.logic.admin_logic import create_basetable
 from app.logic.admin_logic import create_rank_table
+from app.logic.admin_logic import add_roles
 
 
 from app.logic.user_logic import signup_query
@@ -63,14 +65,15 @@ def index():
 
 # вкладка about на данный момент пустая
 @basic_view.route('/about')
-@base_view_except
+# @base_view_except
 def about():
     return render_template('about.html', title='О нас')
 
 
 # вкладка рейтинг на данный момент пустая (неясна надобность ее)
 @basic_view.route('/rating')
-@base_view_except
+@roles_required('admin')
+# @base_view_except
 def rating():
     return render_template('rating.html', title='Рейтинг')
 
@@ -195,70 +198,6 @@ def addevent():
     return render_template('addevent.html', title='Профиль', form=form)
 
 
-# вью для логина
-# @basic_view.route('/login', methods=['GET', 'POST'])
-# # @base_view_except
-# def login():
-#     if current_user.is_authenticated:
-#         return redirect(url_for('basic_view.profile'))
-#     form = LoginForm()
-#     if form.validate_on_submit():
-#         user = USER.query.filter_by(email=form.email.data).first()
-#         # user = USER.query.filter_by(login=form.email.data).first()
-#         if user is None or not user.check_password(form.password.data):
-#             flash('Invalid username or password')
-#             return redirect(url_for('basic_view.login'))
-#         login_user(user)
-#         # login_user(user, remember=form.remember_me.data)
-#         return redirect(url_for('basic_view.profile'))
-#     return render_template('login.html', title='Вход', form=form)
-
-# @basic_view.route('/login', methods=['GET', 'POST'])
-# def login():
-#     # Here we use a class of some kind to represent and validate our
-#     # client-side form data. For example, WTForms is a library that will
-#     # handle this for us, and we use a custom LoginForm to validate.
-#     form = ExtendedLoginForm()
-#     print(form.email.data, form.password.data)
-#     if form.validate_on_submit():
-#         # Login and validate the user.
-#         # user should be an instance of your `User` class
-#         user = USER.query.filter_by(email=form.email.data).first()
-#
-#         if user is None or not user.check_password(form.password.data):
-#         #             flash('Invalid username or password')
-#                     return redirect(url_for('basic_view.login'))
-#         login_user(user)
-#
-#         # flask.flash('Logged in successfully.')
-#
-#         return redirect(url_for('basic_view.profile'))
-#
-#     return render_template('login.html', title='Вход', form=form, q=666)
-
-
-# # вью выход из пользователя
-# @basic_view.route('/logout')
-# # @base_view_except
-# def logout():
-#     logout_user()
-#     return render_template('index.html', title='Новости')
-
-
-# # регистрация пользователя
-# @basic_view.route('/signup', methods=['GET', 'POST'])
-# @base_view_except
-# def signup():
-#     if current_user.is_authenticated:
-#         return redirect(url_for('basic_view.login'))
-#     form = RegistrationForm()
-#     if form.validate_on_submit():
-#         signup_query(username=form.username.data, email=form.email.data, password=form.password.data)
-#         flash('Congratulations, you are now a registered user!')
-#         return redirect(url_for('basic_view.login'))
-#     return render_template('signup.html', title='Регистрация', form=form)
-
-
 # Форма внесения результатов соревнования участника
 @basic_view.route('/editresult/<int:iduser>/<int:idevent>', methods=['GET', 'POST'])
 # @base_view_except
@@ -302,9 +241,18 @@ def result(id):
 
 
 # ссылки с административными действиями
-@basic_view.route('/addsextable')
-@base_view_except
+
+@basic_view.route('/admin')
+# @base_view_except
+@roles_accepted('admin')
 def admin():
+
+    return render_template('admin.html', title='Admin panel')
+
+@basic_view.route('/do_any')
+# @base_view_except
+@roles_accepted('admin')
+def do_any():
     # заполнить справочник с полами
     # create_sextable()
     # заролнить справочник базовой таблицы из министерства
@@ -312,8 +260,10 @@ def admin():
     # rankList()
     # create_exercise_table()
     # create_rank_table()
+    add_roles()
 
-    return render_template('about.html', title='О нас')
+    return render_template('admin.html', title='Admin panel2')
+
 
 # ссылки с административными действиями
 @basic_view.route('/test')

@@ -27,7 +27,8 @@ def create_app(config_object=ConfigObject):
 
     # app.run(host=HOST, port=PORT)
     app.run(host='192.168.0.100', port='9999', debug=True)
-    # return app
+
+    return app
 
 
 def register_extensions(app):

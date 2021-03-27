@@ -76,6 +76,10 @@ class Role(db.Model, RoleMixin):
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
 
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
+
 class RolesUsers(db.Model):
     __tablename__ = 'roles_users'
     id = db.Column(db.Integer, primary_key=True)

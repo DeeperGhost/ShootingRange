@@ -1,4 +1,6 @@
 from datetime import datetime
+from flask_security.datastore import UserDatastore
+from flask_security import SQLAlchemyUserDatastore
 
 from app.extensions import db
 from app.models.sextable import SexTable
@@ -7,6 +9,8 @@ from app.models.exercise import Exercise
 from app.models.ranktable import RankTable
 from app.models.events_data import EventsData
 from app.models.exercise_data import ExerciseData
+
+from app.models.user import USER, Role
 
 import csv
 
@@ -128,6 +132,18 @@ def create_rank_table():
             db.session.add(new_base_node)
     db.session.commit()
 
+
+def add_roles():
+    # pass
+    print("any")
+    # user_datastore = SQLAlchemyUserDatastore(db, USER, Role)
+    # # user_datastore.create_role(name='admin', description="ADMININSTRATOR")
+    # # user_datastore.create_role(name='writer', description="ADMININSTRATOR")
+    #
+    # u = db.session.query(USER).filter_by(email='evgenioseev@gmail.com').first()
+    # r = db.session.query(Role).filter_by(name='admin').first()
+    # user_datastore.add_role_to_user(u, r)
+    # db.session.commit()
 
 
 

@@ -15,7 +15,7 @@ PORT = 9999
 
 
 class ConfigObject(object):
-    DEBUG = True
+    DEBUG = False
     DEVELOPMENT = True
 
     SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:007@localhost/ShootingRange'
