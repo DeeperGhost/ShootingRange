@@ -1,15 +1,18 @@
 import requests
+
 from flask import jsonify
 from datetime import date
 
 from flask import Blueprint, render_template, json, request
 from flask import flash, redirect, url_for
 
-from flask_login import current_user, login_user, login_required
-from flask_login import logout_user
+from flask_security import login_required
+from flask_login import current_user, login_user
+
 
 from app.views.base_except_view import base_view_except
 from app.forms.login_form import LoginForm, RegistrationForm
+from app.forms.login_form import ExtendedLoginForm
 from app.forms.add_events_form import AddEvent
 from app.forms.add_events_data_form import AddEventMember
 # from app.forms.edit_result_form import EditResult
@@ -20,6 +23,7 @@ from app.logic.admin_logic import create_exercise_table
 from app.logic.admin_logic import create_sextable
 from app.logic.admin_logic import create_basetable
 from app.logic.admin_logic import create_rank_table
+
 
 from app.logic.user_logic import signup_query
 from app.logic.user_logic import add_events, select_events, add_event_data, select_event_members
@@ -87,7 +91,8 @@ def games():
 @base_view_except
 @login_required
 def profile():
-    username = current_user.login
+    # username = current_user.login
+    username = current_user.username
     table = select_events(str(current_user.id))
     # add_events(str(current_user.id))
     return render_template('profile.html', title='Профиль', username=username, table=table)
@@ -191,44 +196,67 @@ def addevent():
 
 
 # вью для логина
-@basic_view.route('/login', methods=['GET', 'POST'])
-@base_view_except
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('basic_view.profile'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = USER.query.filter_by(email=form.email.data).first()
-        # user = USER.query.filter_by(login=form.email.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
-            return redirect(url_for('basic_view.login'))
-        login_user(user)
-        # login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('basic_view.profile'))
-    return render_template('login.html', title='Вход', form=form)
+# @basic_view.route('/login', methods=['GET', 'POST'])
+# # @base_view_except
+# def login():
+#     if current_user.is_authenticated:
+#         return redirect(url_for('basic_view.profile'))
+#     form = LoginForm()
+#     if form.validate_on_submit():
+#         user = USER.query.filter_by(email=form.email.data).first()
+#         # user = USER.query.filter_by(login=form.email.data).first()
+#         if user is None or not user.check_password(form.password.data):
+#             flash('Invalid username or password')
+#             return redirect(url_for('basic_view.login'))
+#         login_user(user)
+#         # login_user(user, remember=form.remember_me.data)
+#         return redirect(url_for('basic_view.profile'))
+#     return render_template('login.html', title='Вход', form=form)
+
+# @basic_view.route('/login', methods=['GET', 'POST'])
+# def login():
+#     # Here we use a class of some kind to represent and validate our
+#     # client-side form data. For example, WTForms is a library that will
+#     # handle this for us, and we use a custom LoginForm to validate.
+#     form = ExtendedLoginForm()
+#     print(form.email.data, form.password.data)
+#     if form.validate_on_submit():
+#         # Login and validate the user.
+#         # user should be an instance of your `User` class
+#         user = USER.query.filter_by(email=form.email.data).first()
+#
+#         if user is None or not user.check_password(form.password.data):
+#         #             flash('Invalid username or password')
+#                     return redirect(url_for('basic_view.login'))
+#         login_user(user)
+#
+#         # flask.flash('Logged in successfully.')
+#
+#         return redirect(url_for('basic_view.profile'))
+#
+#     return render_template('login.html', title='Вход', form=form, q=666)
 
 
-# вью выход из пользователя
-@basic_view.route('/logout')
-@base_view_except
-def logout():
-    logout_user()
-    return render_template('index.html', title='Новости')
+# # вью выход из пользователя
+# @basic_view.route('/logout')
+# # @base_view_except
+# def logout():
+#     logout_user()
+#     return render_template('index.html', title='Новости')
 
 
-# регистрация пользователя
-@basic_view.route('/signup', methods=['GET', 'POST'])
-@base_view_except
-def signup():
-    if current_user.is_authenticated:
-        return redirect(url_for('basic_view.login'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        signup_query(username=form.username.data, email=form.email.data, password=form.password.data)
-        flash('Congratulations, you are now a registered user!')
-        return redirect(url_for('basic_view.login'))
-    return render_template('signup.html', title='Регистрация', form=form)
+# # регистрация пользователя
+# @basic_view.route('/signup', methods=['GET', 'POST'])
+# @base_view_except
+# def signup():
+#     if current_user.is_authenticated:
+#         return redirect(url_for('basic_view.login'))
+#     form = RegistrationForm()
+#     if form.validate_on_submit():
+#         signup_query(username=form.username.data, email=form.email.data, password=form.password.data)
+#         flash('Congratulations, you are now a registered user!')
+#         return redirect(url_for('basic_view.login'))
+#     return render_template('signup.html', title='Регистрация', form=form)
 
 
 # Форма внесения результатов соревнования участника

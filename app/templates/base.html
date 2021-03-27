@@ -6,53 +6,37 @@
     {% if title %}
     <title>{{ title }}</title>
     {% else %}
-    <title>Welcome to Microblog</title>
+    <title>Shooting Range</title>
     {% endif %}
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/header.css') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
-
     <link rel="shortcut icon" href="{{ url_for('static', filename='shamrock.ico') }}">
-
 
 </head>
 <body>
 
-
-
 <header>
     <nav class="menu">
         <ul>
-<!--            <li><a class="logo" href="sitename.com"><img src="{{url_for('static', filename='icon.jpeg')}}"-->
-<!--                                                         style="border: 0; height: 50px; width: 88px;"/></a></li>-->
             <li><a href="{{ url_for('basic_view.index') }}" class="linkhead">Новости</a></li>
             <li><a href="{{ url_for('basic_view.rating') }}" class="linkhead">Рейтинг</a></li>
             <li><a href="{{ url_for('basic_view.games') }}" class="linkhead">Соревнования</a></li>
             <li><a href="{{ url_for('basic_view.about') }}" class="linkhead">Информация</a></li>
 
             {% if current_user.is_anonymous %}
-            <li><a href="{{ url_for('basic_view.login') }}" class="linkhead">Вход</a></li>
-            <li><a href="{{ url_for('basic_view.signup') }}" class="linkhead">Регистрация</a></li>
+            <li><a href="{{ url_for('security.login') }}" class="linkhead">Вход</a></li>
+
+            <li><a href="{{ url_for('security.register') }}" class="linkhead">Регистрация</a></li>
             {% else %}
             <li><a href="{{ url_for('basic_view.profile') }}" class="linkhead">Профиль</a></li>
-            <li><a href="{{ url_for('basic_view.logout') }}" class="linkhead">Выход</a></li>
+            <li><a href="{{ url_for('security.logout') }}" class="linkhead">Выход</a></li>
             {% endif %}
 
         </ul>
     </nav>
 </header>
-
-<!--<hr>-->
-<!--{% with messages = get_flashed_messages() %}-->
-<!--{% if messages %}-->
-<!--<ul>-->
-<!--    {% for message in messages %}-->
-<!--    <li>{{ message }}</li>-->
-<!--    {% endfor %}-->
-<!--</ul>-->
-<!--{% endif %}-->
-<!--{% endwith %}-->
 
 
 {% block content %}{% endblock %}

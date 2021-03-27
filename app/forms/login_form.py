@@ -7,16 +7,29 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from app.models.user import USER
 
+from flask_security.forms import LoginForm, RegisterForm
+from flask_security.forms import password_length, email_validator
+# class LoginForm(FlaskForm):
+#     email = StringField('Email', validators=[DataRequired(), Email()])
+#     password = PasswordField('Password', validators=[DataRequired()])
+#     submit = SubmitField('Вход')
 
-class LoginForm(FlaskForm):
+class ExtendedLoginForm(LoginForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Вход')
 
+class ExtendedRegisterForm(RegisterForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired(), password_length])
+    password_confirm = PasswordField('Password еще', validators=[DataRequired(), password_length])
+    submit = SubmitField('Регистрация')
+
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('Email2', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])

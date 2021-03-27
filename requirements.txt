@@ -1,9 +1,12 @@
 Flask 1.1.2
 flask_sqlalchemy
 Flask-Migrate
+Flask-Security
+Flask-Mail
 psycopg2
 SQLAlchemy
 flask_wtf
 requests
 flask-login
 email_validator
+bcrypt
