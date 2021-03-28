@@ -17,6 +17,8 @@ class EVENTS(UserMixin, db.Model):
     event_name = db.Column(db.String, nullable=False)
     # дата начала соревнования
     start_date = db.Column(db.String, nullable=False)
+    # дата окончания соревнования
+    end_date = db.Column(db.String, nullable=True)
     # дата создания соревнования
     create_date = db.Column(db.String, nullable=False)
     # статус соревнования (готовится, идет, закочилось)
@@ -33,11 +35,11 @@ class EVENTS(UserMixin, db.Model):
     events_data = db.relationship('EventsData', backref='author', lazy='dynamic')
 
 
-    def __init__(self, id_user, event_name, start_date, create_date, caption):
+    def __init__(self, id_user, event_name, start_date,end_date, create_date, caption):
         self.id_user = id_user
         self.event_name = event_name
         self.start_date = start_date
-
+        self.end_date = end_date
         self.create_date = create_date
         self.caption = caption
 

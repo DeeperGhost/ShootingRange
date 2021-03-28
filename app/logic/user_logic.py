@@ -50,8 +50,11 @@ def select_event_members(id_event):
         .order_by(EventsData.ExerciseID, EventsData.result_player.desc()) \
         .filter(EventsData.id_event == id_event).all()
 
-# удаление соревнования вместе с его участниками
+
 def remove_event(id_event):
+    """Функция удаляет соревнования вместе с участниками,
+     а также результами этих участников, на вход получает ID соревнования"""
+
     # Удаляет результаты учатников соревнования
     t = db.session.query(EventsData.id).filter_by(id_event=id_event).all()
     [remove_event_data(i) for i in t]
@@ -64,8 +67,9 @@ def remove_event(id_event):
     db.session.commit()
 
 
-# удаляет строку игрока из таблицы даных игроков
 def remove_event_data(id_user):
+    """Удаляет участника соревнования вместе с его результатами,
+     на вход получает ID участника"""
     db.session.query(ExerciseData).filter_by(EventsDataID=id_user).delete()
     db.session.commit()
 
@@ -73,10 +77,11 @@ def remove_event_data(id_user):
     db.session.commit()
 
 
-# добавляет соревнование
-def add_events(id_curent_user, event_name, caption, start_date):
+def add_events(id_curent_user, event_name, caption, start_date, end_date):
+    """Добавяет соревнование, на вход получает название,
+     описание дату старта и дату окоончания"""
     create_date = datetime.strftime(datetime.now(), "%Y.%m.%d %H:%M:%S")
-    new_events = EVENTS(id_user=id_curent_user, event_name=event_name, start_date=start_date,
+    new_events = EVENTS(id_user=id_curent_user, event_name=event_name, start_date=start_date, end_date=end_date,
                         create_date=create_date, caption=caption)
     db.session.add(new_events)
     db.session.commit()

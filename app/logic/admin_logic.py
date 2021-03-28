@@ -138,11 +138,15 @@ def add_roles():
     print("any")
     # user_datastore = SQLAlchemyUserDatastore(db, USER, Role)
     # # user_datastore.create_role(name='admin', description="ADMININSTRATOR")
-    # # user_datastore.create_role(name='writer', description="ADMININSTRATOR")
-    #
-    # u = db.session.query(USER).filter_by(email='evgenioseev@gmail.com').first()
-    # r = db.session.query(Role).filter_by(name='admin').first()
-    # user_datastore.add_role_to_user(u, r)
+    # # user_datastore.create_role(name='user', description="USER")
+    # #
+    # # u = db.session.query(USER).filter_by(email='evgenioseev@gmail.com').first()
+    # u = db.session.query(USER).filter_by(email='vasya111@gmail.com').first()
+    # # r = db.session.query(Role).filter_by(name='admin').first()
+    # r = db.session.query(Role).filter_by(name='user').first()
+    # # user_datastore.add_role_to_user(u, r)
+    # # user_datastore.remove_role_from_user(u, r)
+    # user_datastore.delete_user(u)
     # db.session.commit()
 
 

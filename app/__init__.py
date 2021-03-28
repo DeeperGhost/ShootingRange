@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_mail import Mail
-from flask_security import Security, SQLAlchemyUserDatastore
+from flask_security import Security, SQLAlchemyUserDatastore, user_registered
 
 from app.extensions import db, migrate, login_manager
 
@@ -27,8 +27,7 @@ def create_app(config_object=ConfigObject):
 
     # app.run(host=HOST, port=PORT)
     app.run(host='192.168.0.100', port='9999', debug=True)
-
-    return app
+    # return app
 
 
 def register_extensions(app):
@@ -48,6 +47,11 @@ def register_extensions(app):
     def security_register_processor():
         return dict(title="Регистрация")
 
+    @user_registered.connect_via(app)
+    def user_registered_sighandler(app, user, confirm_token):
+        default_role = user_datastore.find_role("user")
+        user_datastore.add_role_to_user(user, default_role)
+        db.session.commit()
 
 def register_blueprints(app):
 #     app.register_blueprint(indicators)

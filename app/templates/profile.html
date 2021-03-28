@@ -16,6 +16,7 @@
         <th>дата создания</th>
         <th>описание</th>
         <th>статус</th>
+        <th>дата окончания</th>
         <th>подробно</th>
         <th>удалить</th>
 
@@ -29,6 +30,7 @@
             <td>{{i.create_date}}</td>
             <td>{{i.caption}}</td>
             <td>{{i.event_status}}</td>
+            <td>{{i.end_date}}</td>
             <td><a href="{{ url_for('basic_view.event', idevent=i.id) }}">просмотр</a></td>
             <td><a href="{{ url_for('basic_view.eventremove', idevent=i.id) }}">удалить</a></td>
         </tr>

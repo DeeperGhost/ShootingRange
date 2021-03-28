@@ -190,7 +190,7 @@ def addevent():
         # d = date.fromisoformat(form.start_date.data)
         # print(form.start_date.data.strftime('%d.%m.%Y'))
         add_events(id_curent_user=current_user.id, event_name=form.name.data,
-                   caption=form.caption.data, start_date=form.start_date.data)
+                   caption=form.caption.data, start_date=form.start_date.data, end_date=form.end_date.data)
         return redirect(url_for('basic_view.profile'))
 
     # print(form.caption.data)

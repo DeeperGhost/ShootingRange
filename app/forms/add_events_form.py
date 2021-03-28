@@ -14,17 +14,16 @@ from app.models.user import USER
 class AddEvent(FlaskForm):
     # общее
     # название соревнования
-    name = StringField('Название соревнования', validators=[DataRequired()])
+    name = StringField('название соревнования', validators=[DataRequired()])
     # опсаине соревнования
-    caption = StringField('Описание', validators=[DataRequired()])
-
+    caption = StringField('описание', validators=[DataRequired()])
 
     # choise = SelectField('Payload Type', choices=[(1,"Group1"),(2,"Group2")])
     # состояния
     # start_date = StringField('Старт соревнования', validators=[DataRequired()])
-    start_date = DateField('начало соревнований', format='%Y-%m-%d')
+    start_date = DateField('начало соревнования', format='%Y-%m-%d')
     # start_date = DateField('Начало соревнований')
-    # end_date = StringField('end_date', validators=[DataRequired()])
+    end_date = DateField('окончание соревнования', format='%Y-%m-%d')
     # registration_start = StringField('registration_start', validators=[DataRequired()])
     # registration_end = StringField('registration_end', validators=[DataRequired()])
 
@@ -41,13 +40,3 @@ class AddEvent(FlaskForm):
     # exercise = StringField('exercise', validators=[DataRequired()])
 
     submit = SubmitField('Создать')
-
-    # def validate_username(self, username):
-    #     user = USER.query.filter_by(login=username.data).first()
-    #     if user is not None:
-    #         raise ValidationError('Please use a different username.')
-    #
-    # def validate_email(self, email):
-    #     user = USER.query.filter_by(email=email.data).first()
-    #     if user is not None:
-    #         raise ValidationError('Please use a different email address.')
