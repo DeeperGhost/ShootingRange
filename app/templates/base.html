@@ -32,6 +32,11 @@
             {% else %}
             <li><a href="{{ url_for('basic_view.profile') }}" class="linkhead">Профиль</a></li>
             <li><a href="{{ url_for('security.logout') }}" class="linkhead">Выход</a></li>
+
+            {% if current_user.roles[0].name == 'admin' %}
+            <li><a href="{{ url_for('basic_view.admin') }}" class="linkhead">Admin</a></li>
+            {% endif %}
+
             {% endif %}
 
         </ul>

@@ -9,18 +9,20 @@ from wtforms.validators import NumberRange
 from wtforms.validators import InputRequired, Length
 
 
-class LocationForm(FlaskForm):
+class ResultForm(FlaskForm):
+    """Статическое поля для динамической формы DinamicResultForm"""
     result = IntegerField('результат',
                           validators=[NumberRange(min=0, max=100, message='Неверное значение')], default=0)
 
 
-def cont_f(entries):
+def input_res_func_form(entries):
+    """Функция обертка для передачи параметра в динамическую форму"""
     class DinamicResultForm(FlaskForm):
-        series = FieldList(FormField(LocationForm), min_entries=entries)
+        """Динамическая форма ввода результатов"""
+        series = FieldList(FormField(ResultForm), min_entries=entries)
         tens_count = IntegerField('количество 10',
-                                  validators=[NumberRange(min=0, max=100, message='Неверное количество 10 балов')],default=0)
-
-        submit2 = SubmitField('Сохранить')
-
+                                  validators=[NumberRange(min=0, max=100, message='Неверное количество 10 балов')],
+                                  default=0)
+        submit = SubmitField('Сохранить')
     form = DinamicResultForm()
     return form

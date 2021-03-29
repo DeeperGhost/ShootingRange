@@ -10,13 +10,14 @@ from app.models.ranktable import RankTable
 from app.models.events_data import EventsData
 from app.models.exercise_data import ExerciseData
 
-from app.models.user import USER, Role
+from app.models.user import USER, Role, RolesUsers
 
 import csv
 
 
 # Заполнить справочник SexTable
 def create_sextable():
+    """Заполняет справочник полов участников"""
     # Удалить все данные из таблицы SexTable
     db.session.query(SexTable).delete()
     db.session.commit()
@@ -49,11 +50,8 @@ def exercise_list():
         .distinct(BaseTable.short_caption, BaseTable.series, BaseTable.total_shoot).all()
 
 
-# def rankList():
-#     # return db.session.query(BaseTable).distinct(BaseTable.rank).group_by(BaseTable.rank).all()
-#     return db.session.query(BaseTable.rank, BaseTable.id_sex).distinct(BaseTable.rank, BaseTable.id_sex).all()
-
 def rankList():
+    """Запрос списка званий спортсменов для выбора при заполнении данных по учатснику"""
     # return db.session.query(BaseTable).distinct(BaseTable.rank).group_by(BaseTable.rank).all()
     return db.session.query(RankTable.RankID, RankTable.name).distinct(RankTable.RankID, RankTable.name).all()
 
@@ -69,7 +67,7 @@ def switchsexID(sex):
 def create_basetable():
     # Удалить все данные из таблицы SexTable
 
-    db.session.commit()
+    # db.session.commit()
     with open('app/res/databasetable.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=";")
         for row in reader:
@@ -86,6 +84,9 @@ def create_basetable():
 
 # Заполнить справочник exercise
 def create_exercise_table():
+    """Заполняет справочник упражнений из csv файла
+    вначале обнуляет все данные по занесенным соревнования и
+     потом перезаписывает справочник"""
     db.session.query(ExerciseData).delete()
     db.session.query(EventsData).delete()
     db.session.query(Exercise).delete()
@@ -119,8 +120,9 @@ def create_exercise_table():
     db.session.commit()
 
 
-# Заполнить справочник ranktable
 def create_rank_table():
+    """Заполняет справочник соревнований из csv файла
+    вначале удаляет занесенные данные потом записывает обновленные"""
     db.session.query(RankTable).delete()
     db.session.commit()
     with open('app/res/ranktable.csv', newline='', encoding='utf-8') as csvfile:
@@ -141,13 +143,24 @@ def add_roles():
     # # user_datastore.create_role(name='user', description="USER")
     # #
     # # u = db.session.query(USER).filter_by(email='evgenioseev@gmail.com').first()
-    # u = db.session.query(USER).filter_by(email='vasya111@gmail.com').first()
+    # u = db.session.query(USER).filter_by(email='666@mail.ru').first()
     # # r = db.session.query(Role).filter_by(name='admin').first()
     # r = db.session.query(Role).filter_by(name='user').first()
     # # user_datastore.add_role_to_user(u, r)
     # # user_datastore.remove_role_from_user(u, r)
     # user_datastore.delete_user(u)
     # db.session.commit()
+
+
+def lst_users_roles():
+    """Возвращает таблицу пользователей с их ролями,
+    для последующего редактирвоания ролей пользователей,
+     а также их удаления/блокировки"""
+    lst = db.session.query(USER.email, USER.username, Role.name)\
+        .join(RolesUsers, USER.id == RolesUsers.user_id)\
+        .join(Role, Role.id == RolesUsers.role_id)\
+        .all()
+    return lst
 
 
 

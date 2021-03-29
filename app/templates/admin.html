@@ -12,4 +12,20 @@
     <li><a href="{{ url_for('basic_view.do_any') }}">admin</a></li>
 </ul>
 
+<table>
+    <tr>
+        <th>username</th>
+        <th>email</th>
+        <th>role</th>
+    </tr>
+    {% for i in lst_users %}
+    <tr>
+        <td>{{i.username}}</td>
+        <td>{{i.email}}</td>
+        <td>{{i.name}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
 {% endblock %}

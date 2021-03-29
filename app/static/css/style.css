@@ -52,7 +52,7 @@ input ,  button{
 
 
 table {
-    width: 70%; /* Ширина таблицы */
+    width:70%; /* Ширина таблицы */
     margin: auto; /*по центру элемента*/
     border-collapse: collapse; /* Убираем двойные рамки */
    }

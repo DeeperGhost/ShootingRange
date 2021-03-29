@@ -17,7 +17,7 @@ from app.forms.login_form import ExtendedLoginForm
 from app.forms.add_events_form import AddEvent
 from app.forms.add_events_data_form import AddEventMember
 # from app.forms.edit_result_form import EditResult
-from app.forms.edit_result_form import cont_f
+from app.forms.edit_result_form import input_res_func_form
 
 from app.logic.admin_logic import rankList, sexlist, shortCaptionList, gunList, exercise_list
 from app.logic.admin_logic import create_exercise_table
@@ -25,6 +25,7 @@ from app.logic.admin_logic import create_sextable
 from app.logic.admin_logic import create_basetable
 from app.logic.admin_logic import create_rank_table
 from app.logic.admin_logic import add_roles
+from app.logic.admin_logic import lst_users_roles
 
 
 from app.logic.user_logic import signup_query
@@ -203,34 +204,32 @@ def addevent():
 # @base_view_except
 @login_required
 def editresult(iduser, idevent):
-
+    """View внесения результатов участника"""
     entries, series = parametr_exercise(iduser)
-    # print(entries, series)
-    form = cont_f(entries=entries/10)
+
+    # Функция обертка для передачи параметра в динамическую форму
+    form = input_res_func_form(entries=entries/10)
     if form.validate_on_submit():
         lst_ex = []
         for i in form.series.entries:
             pass
             lst_ex.append(i.data['result'])
-            # print(i.data['result'])
         while len(lst_ex) < 10:
             lst_ex.append(0)
-        # print(lst_ex)
-        # print(len(lst_ex))
 
         set_exercise_data(EventsDataID=iduser, ex1=lst_ex[0], ex2=lst_ex[1], ex3=lst_ex[2], ex4=lst_ex[3],
                           ex5=lst_ex[4], ex6=lst_ex[5], ex7=lst_ex[6], ex8=lst_ex[7], ex9=lst_ex[8], ex10=lst_ex[9],
                           tens_count=form.tens_count.data)
 
-        # return redirect(url_for('basic_view.event', idevent=idevent))
         return redirect(url_for('basic_view.event', idevent=idevent))
-
     return render_template('editresult.html', title='внести данные', form=form, series=series)
 
-# показывает результаты участника
+
 @basic_view.route('/result/<int:id>')
 # @base_view_except
 def result(id):
+    """View вывода результатов участника
+    -требуются доработки"""
     t1, t2 = select_result(id)
     entries, series = parametr_exercise(id)
     # t3 = str(t1).split(',')
@@ -240,19 +239,22 @@ def result(id):
     return render_template('result.html', title='резултат', t1=t1,t2=t2)
 
 
-# ссылки с административными действиями
-
 @basic_view.route('/admin')
 # @base_view_except
 @roles_accepted('admin')
 def admin():
+    """View админской панели"""
+    # список зарегестрированых пользователей с ролями
+    lst_users = lst_users_roles()
 
-    return render_template('admin.html', title='Admin panel')
+    return render_template('admin.html', title='Admin panel', lst_users=lst_users)
+
 
 @basic_view.route('/do_any')
 # @base_view_except
 @roles_accepted('admin')
 def do_any():
+    """функция для тестирвоания промежуточных функций админ панели"""
     # заполнить справочник с полами
     # create_sextable()
     # заролнить справочник базовой таблицы из министерства
@@ -261,6 +263,7 @@ def do_any():
     # create_exercise_table()
     # create_rank_table()
     add_roles()
+    # remove_event(64)
 
     return render_template('admin.html', title='Admin panel2')
 

@@ -20,9 +20,6 @@
     {{ form.hidden_tag() }}
 
 
-
-
-
     {% for error in form.tens_count.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
@@ -44,7 +41,7 @@
         <th>{{ i.result() }}</th>
         {% endfor %}
         <th>{{form.tens_count()}}</th>
-        <th>{{ form.submit2() }}</th>
+        <th>{{ form.submit() }}</th>
     </tr>
     </table>
     {% for j in range(series)%}
