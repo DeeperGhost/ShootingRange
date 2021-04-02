@@ -239,6 +239,13 @@ def result(id):
     return render_template('result.html', title='резултат', t1=t1,t2=t2)
 
 
+@basic_view.route('/eventedit/<int:id>')
+def event_edit(id):
+    """View редактироваиня соревнвание"""
+
+    return render_template('eventedit.html', title='редактирование', t=id)
+
+
 @basic_view.route('/admin')
 # @base_view_except
 @roles_accepted('admin')

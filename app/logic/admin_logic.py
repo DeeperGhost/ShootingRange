@@ -9,6 +9,7 @@ from app.models.exercise import Exercise
 from app.models.ranktable import RankTable
 from app.models.events_data import EventsData
 from app.models.exercise_data import ExerciseData
+from app.models.events import EVENTS
 
 from app.models.user import USER, Role, RolesUsers
 
@@ -151,6 +152,12 @@ def add_roles():
     # user_datastore.delete_user(u)
     # db.session.commit()
 
+    # u = db.session.query(EVENTS).all()
+    # for i in u:
+    #     i.id_base_event = i.id
+    #     i.id_base_user = i.id_user
+    #     # print(i.id)
+    # db.session.commit()
 
 def lst_users_roles():
     """Возвращает таблицу пользователей с их ролями,

@@ -77,12 +77,13 @@ def remove_event_data(id_user):
     db.session.commit()
 
 
-def add_events(id_curent_user, event_name, caption, start_date, end_date):
+def add_events(id_curent_user, event_name, caption, start_date, end_date, id_base_user=0, id_base_event=0):
     """Добавяет соревнование, на вход получает название,
      описание дату старта и дату окоончания"""
     create_date = datetime.strftime(datetime.now(), "%Y.%m.%d %H:%M:%S")
     new_events = EVENTS(id_user=id_curent_user, event_name=event_name, start_date=start_date, end_date=end_date,
-                        create_date=create_date, caption=caption)
+                        create_date=create_date, caption=caption, id_base_user=id_base_user,
+                        id_base_event=id_base_event)
     db.session.add(new_events)
     db.session.commit()
 
