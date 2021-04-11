@@ -16,6 +16,8 @@ from app.models.exercise_data import ExerciseData
 from config import ConfigObject
 
 from app.views.basic_view import basic_view
+from app.views.api_view import api_view
+
 
 
 def create_app(config_object=ConfigObject):
@@ -57,4 +59,5 @@ def register_blueprints(app):
 #     app.register_blueprint(indicators)
 #     app.register_blueprint(upload)
     app.register_blueprint(basic_view)
+    app.register_blueprint(api_view)
 

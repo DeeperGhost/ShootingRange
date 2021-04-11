@@ -79,14 +79,14 @@ def rating():
     return render_template('rating.html', title='Рейтинг')
 
 
-# Вкладка игры-соревнования отображает видимые для всех списки соревнований а, также результаты
 @basic_view.route('/games')
 @base_view_except
 def games():
+    """Вкладка игры-соревнования отображает видимые для всех списки соревнований а, также результаты"""
     table = select_events("all")
     # print(type(table))
     # for i in table:
-    #     print(i[0].caption)
+    #     print(i)
     return render_template('games.html', title='Соревнования', table=table)
 
 
@@ -191,7 +191,8 @@ def addevent():
         # d = date.fromisoformat(form.start_date.data)
         # print(form.start_date.data.strftime('%d.%m.%Y'))
         add_events(id_curent_user=current_user.id, event_name=form.name.data,
-                   caption=form.caption.data, start_date=form.start_date.data, end_date=form.end_date.data)
+                   caption=form.caption.data, start_date=form.start_date.data, end_date=form.end_date.data,
+                   id_base_user=current_user.id)
         return redirect(url_for('basic_view.profile'))
 
     # print(form.caption.data)

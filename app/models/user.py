@@ -49,6 +49,7 @@ class USER(UserMixin, db.Model):
     rank = db.Column(db.Integer, nullable=True)
 
     events = db.relationship('EVENTS', backref='author', lazy='dynamic')
+    role_events = db.relationship('RoleEvents', backref='RoleEventsUser', lazy='dynamic')
 
     roles = db.relationship('Role', secondary='roles_users',
                             backref=db.backref('users', lazy='dynamic'))

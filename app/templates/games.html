@@ -2,13 +2,17 @@
 
 {% block content %}
 
+<script type="text/javascript" src="{{ url_for('static', filename='js/to_flask.js') }}"></script>
+
     <h1>Соревнования</h1>
 
 <br>
 <br>
 <table class="event_table">
     <tr>
-        <th>id-соревнования</th>
+        {% if current_user.is_authenticated%}
+        <th>редактор</th>
+        {% endif %}
         <th>организатор</th>
         <th>название</th>
         <th>дата начала</th>
@@ -22,7 +26,12 @@
     {% for i in table %}
 
     <tr>
-         <td>{{i[0].id}}</td>
+        {% if current_user.is_authenticated%}
+            <td>
+                <input class="check_box" id="input_check" type="checkbox"
+                       onclick="q({{i[0].id}}, checked, {{current_user.get_id()}})" >
+            </td>
+        {% endif %}
         <td>{{i[1]}}</td>
         <td>{{i[0].event_name}}</td>
         <td>{{i[0].start_date}}</td>

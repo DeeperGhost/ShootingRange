@@ -9,6 +9,8 @@ from app.models.events_data import EventsData
 from app.models.exercise import Exercise
 from app.models.exercise_data import ExerciseData
 from app.models.ranktable import RankTable
+from app.models.events import RoleEvents
+
 
 
 def admin_pg_db():
@@ -54,6 +56,9 @@ def select_event_members(id_event):
 def remove_event(id_event):
     """Функция удаляет соревнования вместе с участниками,
      а также результами этих участников, на вход получает ID соревнования"""
+    # удаляет роли соревнования в таблице ролей
+    db.session.query(RoleEvents).filter_by(id_event=id_event).delete()
+    db.session.commit()
 
     # Удаляет результаты учатников соревнования
     t = db.session.query(EventsData.id).filter_by(id_event=id_event).all()
@@ -84,8 +89,22 @@ def add_events(id_curent_user, event_name, caption, start_date, end_date, id_bas
     new_events = EVENTS(id_user=id_curent_user, event_name=event_name, start_date=start_date, end_date=end_date,
                         create_date=create_date, caption=caption, id_base_user=id_base_user,
                         id_base_event=id_base_event)
+    # print(new_events.id)
     db.session.add(new_events)
     db.session.commit()
+
+    if id_base_user != 0 and id_base_event == 0:
+        #Добавляем ид в кололку базового ид соревнования
+        event = EVENTS.query.filter_by(id=new_events.id).first()
+        event.id_base_event = new_events.id
+        db.session.commit()
+        # добаляем роль содателя соревнования для пользователя
+        role_event = RoleEvents(id_event=new_events.id, id_user=id_curent_user, status="creator")
+        db.session.add(role_event)
+        db.session.commit()
+
+
+    # print(new_events.id)
 
 
 # добавляет игрока в соревнование
@@ -116,11 +135,11 @@ def set_exercise_data(EventsDataID, ex1=0, ex2=0, ex3=0, ex4=0, ex5=0, ex6=0, ex
     EvData.result_player = ExData.result_player
     EvData.reached_rank = id_reached_rank(EventsDataID)
     db.session.commit()
-    db.session.commit()
+    # db.session.commit()
 
 
-# вычисляет ид достигнутого разряда
 def id_reached_rank(EventsDataID):
+    """Вычисляет выполненый разряд в состязании"""
     EvData = EventsData.query.filter_by(id=EventsDataID).first()
     ExData = ExerciseData.query.filter_by(EventsDataID=EventsDataID).first()
     # print(EvData.gun_player, EvData.sex_player)
@@ -130,7 +149,6 @@ def id_reached_rank(EventsDataID):
         s = 0
     else:
         s = 1
-    # print(s)
     for i in range(s, len(Ex), 2):
         if result >= Ex[i] and Ex[i] != 0:
             if i == 10 or i == 11:

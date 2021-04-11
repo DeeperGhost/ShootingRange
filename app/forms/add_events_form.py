@@ -40,3 +40,7 @@ class AddEvent(FlaskForm):
     # exercise = StringField('exercise', validators=[DataRequired()])
 
     submit = SubmitField('Создать')
+
+
+class RegRedactUser(FlaskForm):
+    name = StringField('name')
