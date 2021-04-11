@@ -9,9 +9,12 @@ from app.models.exercise import Exercise
 from app.models.ranktable import RankTable
 from app.models.events_data import EventsData
 from app.models.exercise_data import ExerciseData
-from app.models.events import EVENTS
+from app.models.events import EVENTS, RoleEvents
 
 from app.models.user import USER, Role, RolesUsers
+
+
+from app.logic.user_logic import remove_event
 
 import csv
 
@@ -159,17 +162,29 @@ def add_roles():
     #     # print(i.id)
     # db.session.commit()
 
+
+def delete_user(id_user):
+    """Удалить пользователя вместе с его ролями и дааными (соревнованиями)"""
+    # Удаляет все соревнования созданые пользователем
+    t = db.session.query(EVENTS).filter_by(id_base_user=id_user).all()
+    for i in t:
+        remove_event(i.id)
+    db.session.commit()
+
+    # print("id", id_user)
+    # удаляет данные пользователя
+    user_datastore = SQLAlchemyUserDatastore(db, USER, Role)
+    u = db.session.query(USER).filter_by(id=id_user).first()
+    user_datastore.delete_user(u)
+    db.session.commit()
+
+
 def lst_users_roles():
     """Возвращает таблицу пользователей с их ролями,
     для последующего редактирвоания ролей пользователей,
      а также их удаления/блокировки"""
-    lst = db.session.query(USER.email, USER.username, Role.name)\
+    lst = db.session.query(USER.id, USER.email, USER.username, Role.name)\
         .join(RolesUsers, USER.id == RolesUsers.user_id)\
         .join(Role, Role.id == RolesUsers.role_id)\
         .all()
     return lst
-
-
-
-
-

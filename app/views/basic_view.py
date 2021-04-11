@@ -26,6 +26,7 @@ from app.logic.admin_logic import create_basetable
 from app.logic.admin_logic import create_rank_table
 from app.logic.admin_logic import add_roles
 from app.logic.admin_logic import lst_users_roles
+from app.logic.admin_logic import delete_user
 
 
 from app.logic.user_logic import signup_query
@@ -274,6 +275,16 @@ def do_any():
     # remove_event(64)
 
     return render_template('admin.html', title='Admin panel2')
+
+
+@basic_view.route('/del_user/<int:id>')
+# @base_view_except
+@roles_accepted('admin')
+def del_user(id):
+    """удалить пользователя"""
+    delete_user(id)
+    lst_users = lst_users_roles()
+    return render_template('admin.html', title='Admin panel', lst_users=lst_users)
 
 
 # ссылки с административными действиями

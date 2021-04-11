@@ -2,12 +2,8 @@
 
 {% block content %}
 
-<p><a href="{{ url_for('basic_view.addevent') }}">Добавить соревнвоание</a></p>
 
-<!--<p><a href="">Редактировать профиль</a></p>-->
-
-    <h1>Соревнования, организованые {{username}}!</h1>
-<br>
+<h2>cоревнования, организованые {{username}}!</h2>
 <br>
 <table class="event_table">
     <tr>
@@ -24,7 +20,6 @@
 
     </tr>
     {% for i in table %}
-    <a href="{{ url_for('basic_view.about') }}">
         <tr>
             <td><a href="{{ url_for('basic_view.event_edit',id=i.id) }}">редактировать</a></td>
             <td>{{i.id}}</td>
@@ -37,10 +32,24 @@
             <td><a href="{{ url_for('basic_view.event', idevent=i.id) }}">просмотр</a></td>
             <td><a href="{{ url_for('basic_view.eventremove', idevent=i.id) }}">удалить</a></td>
         </tr>
-    </a>
     {% endfor %}
-</table>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><a href="{{ url_for('basic_view.addevent') }}">создать</a></td>
+    </tr>
 
+</table>
+<br>
+<h2>cоревнования, где {{username}} редактор</h2>
 
 
 
