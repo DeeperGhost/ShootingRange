@@ -26,6 +26,16 @@ class ExtendedRegisterForm(RegisterForm):
     password_confirm = PasswordField('Password еще', validators=[DataRequired(), password_length])
     submit = SubmitField('Регистрация')
 
+    def validate_username(self, username):
+        user = USER.query.filter_by(username=username.data).first()
+        if user is not None:
+            raise ValidationError('Please use a different username.')
+
+    def validate_email(self, email):
+        user = USER.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError('Please use a different email address.')
+
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
