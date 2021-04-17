@@ -84,7 +84,16 @@ def rating():
 @base_view_except
 def games():
     """Вкладка игры-соревнования отображает видимые для всех списки соревнований а, также результаты"""
-    table = select_events("all")
+
+    if current_user.is_authenticated:
+        print("AUTH")
+        table = select_events("all", auth=True, id=current_user.id)
+        from app.logic.user_logic import select_checked
+        for i in table:
+            print(i)
+    else:
+        print("no AUTH")
+        table = select_events("all")
     # print(type(table))
     # for i in table:
     #     print(i)

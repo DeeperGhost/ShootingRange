@@ -17,15 +17,19 @@ def add_red():
 
 @api_view.route('/get_json_data', methods=['POST'])
 # @base_view_except
-# @login_required
+@login_required
 def get_json_data():
-    print(2+2)
+    # print(2+2)
     request_data = request.get_json(force=True)
     # request_data = request.json
     print(request_data)
-    id = request_data['id']
-    value = request_data['value']
-    id_user = request_data['id_user']
-    print(id, value, id_user)
-    # pass
+    # id = request_data['id']
+    # value = request_data['value']
+    # id_user = request_data['id_user']
+    # print(id, value, id_user)
+    from app.logic.user_logic import add_event_role
+
+    value = "register" if request_data['value'] else "unregister"
+    add_event_role(id_user=request_data['id_user'], id_event=request_data['id'], status=value)
+
     return jsonify(status="done", category="error")

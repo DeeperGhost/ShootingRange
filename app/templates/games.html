@@ -4,7 +4,7 @@
 
 <script type="text/javascript" src="{{ url_for('static', filename='js/to_flask.js') }}"></script>
 
-    <h1>Соревнования</h1>
+    <h2>Соревнования</h2>
 
 <br>
 <br>
@@ -28,18 +28,31 @@
     <tr>
         {% if current_user.is_authenticated%}
             <td>
+
+                {% if i['selected'] == "creator" or  i['selected'] == "user"%}
+                <input class="check_box" id="input_check" type="checkbox" disabled checked
+                       onclick="q({{i['id']}}, checked, {{current_user.get_id()}})" >
+
+                {% elif i['selected'] == "register"%}
+                <input class="check_box" id="input_check" type="checkbox" checked
+                       onclick="q({{i['id']}}, checked, {{current_user.get_id()}})" >
+
+                {% else %}
                 <input class="check_box" id="input_check" type="checkbox"
-                       onclick="q({{i[0].id}}, checked, {{current_user.get_id()}})" >
+                       onclick="q({{i['id']}}, checked, {{current_user.get_id()}})" >
+
+                {% endif %}
+
             </td>
         {% endif %}
-        <td>{{i[1]}}</td>
-        <td>{{i[0].event_name}}</td>
-        <td>{{i[0].start_date}}</td>
-        <td>{{i[0].end_date}}</td>
-        <td>{{i[0].create_date}}</td>
-        <td>{{i[0].caption}}</td>
-        <td>{{i[0].event_status}}</td>
-        <td><a href="{{ url_for('basic_view.eventforall', idevent=i[0].id) }}">просмотр</a></td>
+        <td>{{i['username']}}</td>
+        <td>{{i['event_name']}}</td>
+        <td>{{i['start_date']}}</td>
+        <td>{{i['end_date']}}</td>
+        <td>{{i['create_date']}}</td>
+        <td>{{i['caption']}}</td>
+        <td>{{i['event_status']}}</td>
+        <td><a href="{{ url_for('basic_view.eventforall', idevent=i['id']) }}">просмотр</a></td>
     </tr>
 
 

@@ -66,7 +66,7 @@ class RoleEvents(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_event = db.Column(db.Integer, db.ForeignKey('EVENTS.id'), nullable=False)
     id_user = db.Column(db.Integer, db.ForeignKey('USERS.id'), nullable=False)
-    # status: creator, user, register, rejected
+    # status: creator, user, register, unregister
     status = db.Column(db.String, nullable=False)
 
     def __init__(self, id_event, id_user, status):

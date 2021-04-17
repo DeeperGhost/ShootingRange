@@ -26,13 +26,29 @@ def select_electro():
     return db.session.query(USER).order_by(USER.rank.desc())
 
 
-def select_events(id_user):
+def select_events(id_user, auth=False, id=0):
+    """селект данных для таблицы игр"""
     # Выбор данных из БД
-    # t = db.session.query(EVENTS).order_by(EVENTS.rank.desc())
-    # t = db.session.query(EVENTS.event_name, EVENTS.create_date ).all()
+    # вариант для авторизированого пользователя
     if id_user == "all":
-        return db.session.query(EVENTS, USER.username).order_by(EVENTS.rank.desc()).filter(EVENTS.id_user == USER.id)
+        if auth:
+            # выбираем данные из бд
+            t1 = db.session.query(USER.username, EVENTS.id, EVENTS.event_name, EVENTS.start_date, EVENTS.end_date,
+                                  EVENTS.create_date, EVENTS.caption, EVENTS.event_status) \
+                .join(USER, EVENTS.id_user == USER.id) \
+                .all()
+            # переводим результат заппроса в "лист дикт" и добавляем запись: выбран или нет для чекбокса
+            list_dict = []
+            for i in t1:
+                i_dict = i._asdict()  # sqlalchemy.util._collections.result , has a method called _asdict()
+                i_dict.update({'selected':select_checked(id_user=id, id_event=i_dict['id'])})
+                list_dict.append(i_dict)
+            return list_dict
+        else:
+            # тестовая ветка сюда попадать не должно (удалить)
+            return db.session.query(EVENTS, USER.username).order_by(EVENTS.rank.desc()).filter(EVENTS.id_user == USER.id)
     else:
+        # вариант для не авторизироаного пользователя
         return db.session.query(EVENTS).order_by(EVENTS.rank.desc()).filter_by(id_user=id_user).all()
 
 
@@ -211,4 +227,30 @@ def _gun_exercise_by_name(name):
 def select_result(id):
     t1 = db.session.query(ExerciseData).filter_by(EventsDataID=id).first()
     t2 = db.session.query(EventsData).filter_by(id=id).first()
-    return t1,t2
+    return t1, t2
+
+
+def select_checked(id_user, id_event):
+    """Возвращает является ли ползователь редактором или создателем или нет (для активации селектора)"""
+    t1 = db.session.query(RoleEvents).filter_by(id_event=id_event, id_user=id_user).first()
+    if t1:
+        return t1.status
+        # if t1.status == "creator" or t1.status == "user":
+        #     # print(True)
+        #     return True
+        # else:
+        #     print(False)
+        #     return False
+    else:
+        return False
+
+
+def add_event_role(id_user, id_event, status):
+    """меняет/ присваивает ролью пользователя в соревновании"""
+    t = RoleEvents(id_event=id_event, id_user=id_user, status=status)
+    t1 = db.session.query(RoleEvents).filter_by(id_event=id_event, id_user=id_user).first()
+    if t1:
+        t1.status = status
+    else:
+        db.session.add(t)
+    db.session.commit()
