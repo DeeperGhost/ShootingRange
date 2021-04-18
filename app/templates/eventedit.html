@@ -14,14 +14,18 @@
         <th>username</th>
         <th>email</th>
         <th>профиль</th>
-        <th>наличие прав</th>
+        <th>статус</th>
+        <th>действие</th>
     </tr>
+    {% for i in table %}
     <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
+        <td>{{i.username}}</td>
+        <td>{{i.email}}</td>
+        <td>{{i.id}}</td>
+        <td>{{i.status}}</td>
+        <td>принять отклонить</td>
     </tr>
+    {% endfor %}
 </table>
 
 

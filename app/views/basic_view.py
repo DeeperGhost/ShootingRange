@@ -84,19 +84,10 @@ def rating():
 @base_view_except
 def games():
     """Вкладка игры-соревнования отображает видимые для всех списки соревнований а, также результаты"""
-
     if current_user.is_authenticated:
-        print("AUTH")
-        table = select_events("all", auth=True, id=current_user.id)
-        from app.logic.user_logic import select_checked
-        for i in table:
-            print(i)
+        table = select_events(id_current_user=current_user.id)
     else:
-        print("no AUTH")
-        table = select_events("all")
-    # print(type(table))
-    # for i in table:
-    #     print(i)
+        table = select_events()
     return render_template('games.html', title='Соревнования', table=table)
 
 
@@ -107,7 +98,7 @@ def games():
 def profile():
     # username = current_user.login
     username = current_user.username
-    table = select_events(str(current_user.id))
+    table = select_events(id_current_user=current_user.id, lk=True)
     # add_events(str(current_user.id))
     return render_template('profile.html', title='Профиль', username=username, table=table)
 
@@ -253,8 +244,10 @@ def result(id):
 @basic_view.route('/eventedit/<int:id>')
 def event_edit(id):
     """View редактироваиня соревнвание"""
+    from app.logic.user_logic import list_users_event
+    table_users = list_users_event(id_event=id, id_user=current_user.id)
 
-    return render_template('eventedit.html', title='редактирование', t=id)
+    return render_template('eventedit.html', title='редактирование', table=table_users)
 
 
 @basic_view.route('/admin')
