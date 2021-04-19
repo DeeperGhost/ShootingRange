@@ -3,10 +3,10 @@
 {% block content %}
 <br>
 <br>
-
+<script type="text/javascript" src="{{ url_for('static', filename='js/to_flask.js') }}"></script>
 
 <h2>Реадактор соревнования</h2>
-<p>{{t}}</p>
+<p> t </p>
 
 <p>список редакторов</p>
 <table>
@@ -15,7 +15,9 @@
         <th>email</th>
         <th>профиль</th>
         <th>статус</th>
-        <th>действие</th>
+        <th>редактор</th>
+        <th>удалить</th>
+
     </tr>
     {% for i in table %}
     <tr>
@@ -23,10 +25,21 @@
         <td>{{i.email}}</td>
         <td>{{i.id}}</td>
         <td>{{i.status}}</td>
-        <td>принять отклонить</td>
+        <td>
+            {% if i.status == "user"%}
+            <input class="check_box" id="input_check" type="checkbox" checked
+                   onclick="add_role_event({{id_event}},{{i.id}}, checked)" >
+            {% else %}
+            <input class="check_box" id="input_check" type="checkbox"
+                   onclick="add_role_event({{id_event}},{{i.id}}, checked)" >
+            {% endif %}
+        </td>
+        <td><a href="#">удалить</a></td>
     </tr>
     {% endfor %}
 </table>
+
+
 
 
 {% endblock %}

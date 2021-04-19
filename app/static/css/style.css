@@ -108,3 +108,10 @@ table td:hover:after {
     width : 20px;
     margin: 0;
 }
+
+.check_button{
+    width : 40px;
+    font-size : 10px
+
+
+}

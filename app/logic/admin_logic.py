@@ -166,10 +166,14 @@ def add_roles():
 def delete_user(id_user):
     """Удалить пользователя вместе с его ролями и дааными (соревнованиями)"""
     # Удаляет все соревнования созданые пользователем
+    db.session.query(RoleEvents).filter_by(id_user=id_user).delete()
+    db.session.commit()
+
     t = db.session.query(EVENTS).filter_by(id_base_user=id_user).all()
     for i in t:
         remove_event(i.id)
     db.session.commit()
+
 
     # print("id", id_user)
     # удаляет данные пользователя

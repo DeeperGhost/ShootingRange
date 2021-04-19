@@ -247,7 +247,7 @@ def event_edit(id):
     from app.logic.user_logic import list_users_event
     table_users = list_users_event(id_event=id, id_user=current_user.id)
 
-    return render_template('eventedit.html', title='редактирование', table=table_users)
+    return render_template('eventedit.html', title='редактирование', table=table_users, id_event=id)
 
 
 @basic_view.route('/admin')

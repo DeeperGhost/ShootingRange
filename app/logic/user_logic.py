@@ -246,7 +246,7 @@ def select_checked(id_user, id_event):
         return False
 
 
-def add_event_role(id_user, id_event, status):
+def set_event_role(id_user, id_event, status):
     """меняет/ присваивает ролью пользователя в соревновании"""
     t = RoleEvents(id_event=id_event, id_user=id_user, status=status)
     t1 = db.session.query(RoleEvents).filter_by(id_event=id_event, id_user=id_user).first()
@@ -255,6 +255,7 @@ def add_event_role(id_user, id_event, status):
     else:
         db.session.add(t)
     db.session.commit()
+    return True
 
 
 def list_users_event(id_event, id_user):
@@ -265,5 +266,12 @@ def list_users_event(id_event, id_user):
         .filter(RoleEvents.status != "unregister") \
         .filter(RoleEvents.id_user != id_user) \
         .all()
-
     return t
+
+
+def check_user_role_creator(id_user, id_event):
+    """Проверяет является ли пользователь создателем соревнования"""
+    if db.session.query(RoleEvents).filter_by(id_event=id_event, id_user=id_user).first():
+        return True
+    else:
+        return False

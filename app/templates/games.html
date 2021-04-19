@@ -31,15 +31,15 @@
 
                 {% if i['selected'] == "creator" or  i['selected'] == "user"%}
                 <input class="check_box" id="input_check" type="checkbox" disabled checked
-                       onclick="q({{i['id']}}, checked, {{current_user.get_id()}})" >
+                       onclick="reg_role_event({{i['id']}}, checked, {{current_user.get_id()}})" >
 
                 {% elif i['selected'] == "register"%}
                 <input class="check_box" id="input_check" type="checkbox" checked
-                       onclick="q({{i['id']}}, checked, {{current_user.get_id()}})" >
+                       onclick="reg_role_event({{i['id']}}, checked, {{current_user.get_id()}})" >
 
                 {% else %}
                 <input class="check_box" id="input_check" type="checkbox"
-                       onclick="q({{i['id']}}, checked, {{current_user.get_id()}})" >
+                       onclick="reg_role_event({{i['id']}}, checked, {{current_user.get_id()}})" >
 
                 {% endif %}
 
