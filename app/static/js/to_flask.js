@@ -1,6 +1,6 @@
 function reg_role_event(id, value, id_user){
 /*регестрация роли в соревновании*/
-var url = '/get_json_data'
+var url = '/reg_role_user_event'
 //    alert(id+' '+ value);
     var formData  = {
         id: id,

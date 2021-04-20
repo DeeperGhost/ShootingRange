@@ -20,8 +20,14 @@
 
     </tr>
     {% for i in table %}
+
         <tr>
+            {% if i.id == i.id_base_event %}
             <td><a href="{{ url_for('basic_view.event_edit',id=i.id) }}">редактировать</a></td>
+            {% else %}
+            <td></td>
+            {% endif %}
+
             <td>{{i.id}}</td>
             <td>{{i.event_name}}</td>
             <td>{{i.start_date}}</td>
@@ -29,9 +35,16 @@
             <td>{{i.caption}}</td>
             <td>{{i.event_status}}</td>
             <td>{{i.end_date}}</td>
+
             <td><a href="{{ url_for('basic_view.event', idevent=i.id) }}">просмотр</a></td>
+
+            {% if i.id == i.id_base_event %}
             <td><a href="{{ url_for('basic_view.eventremove', idevent=i.id) }}">удалить</a></td>
+            {% else %}
+            <td></td>
+            {% endif %}
         </tr>
+
     {% endfor %}
     <tr>
         <td></td>
@@ -46,11 +59,6 @@
         <td></td>
         <td><a href="{{ url_for('basic_view.addevent') }}">создать</a></td>
     </tr>
-
 </table>
-<br>
-<h2>cоревнования, где {{username}} редактор</h2>
-
-
 
 {% endblock %}

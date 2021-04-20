@@ -12,7 +12,6 @@ from app.models.ranktable import RankTable
 from app.models.events import RoleEvents
 
 
-
 def admin_pg_db():
     # создает все таблицы
     print("Create_ALL")
@@ -21,17 +20,12 @@ def admin_pg_db():
     # Base.metadata.drop_all(engine)
 
 
-def select_electro():
-    # Выбор данных из БД
-    return db.session.query(USER).order_by(USER.rank.desc())
-
-
 def select_events(id_current_user=0, lk=False):
     """селект данных для таблицы игр"""
     # Выбор данных из БД
     if lk:
         table = db.session.query(USER.username, EVENTS.id, EVENTS.event_name, EVENTS.start_date, EVENTS.end_date,
-                                 EVENTS.create_date, EVENTS.caption, EVENTS.event_status) \
+                                 EVENTS.create_date, EVENTS.caption, EVENTS.event_status, EVENTS.id_base_event) \
             .order_by(EVENTS.rank.desc()) \
             .filter(EVENTS.id_user == USER.id) \
             .filter(EVENTS.id_user == id_current_user) \
@@ -41,6 +35,7 @@ def select_events(id_current_user=0, lk=False):
                                  EVENTS.create_date, EVENTS.caption, EVENTS.event_status) \
             .order_by(EVENTS.rank.desc()) \
             .filter(EVENTS.id_user == USER.id) \
+            .filter(EVENTS.id == EVENTS.id_base_event) \
             .all()
 
     list_dict = []
@@ -63,17 +58,24 @@ def select_event(id_event):
     return db.session.query(EVENTS).order_by(EVENTS.id.desc()).filter_by(id=id_event).first()
 
 
-def select_event_members(id_event):
+def select_event_members(id_event, all=True):
+    """Выбирает данные участников соревнования all=True для общей таблицы False для частной"""
     # print(id_event)
     # return db.session.query(EVENTS, USER.login).order_by(EVENTS.rank.desc()).filter(EVENTS.id_user == USER.id)
     # return db.session.query(EventsData).filter_by(id_event=id_event).all()
     # return db.session.query(EventsData, RankTable.name).filter_by(id_event=id_event).all()
-
-    return db.session.query(EventsData, RankTable.name) \
-        .join(RankTable) \
-        .order_by(EventsData.ExerciseID, EventsData.result_player.desc()) \
-        .filter(EventsData.id_event == id_event).all()
-
+    if all:
+        t = db.session.query(EventsData, RankTable.name, EVENTS)\
+            .join(RankTable) \
+            .order_by(EventsData.ExerciseID, EventsData.result_player.desc()) \
+            .filter(EVENTS.id_base_event == id_event)\
+            .filter(EventsData.id_event == EVENTS.id).all()
+    else:
+        t = db.session.query(EventsData, RankTable.name) \
+            .join(RankTable) \
+            .order_by(EventsData.ExerciseID, EventsData.result_player.desc()) \
+            .filter(EventsData.id_event == id_event).all()
+    return t
 
 def remove_event(id_event):
     """Функция удаляет соревнования вместе с участниками,
@@ -104,6 +106,18 @@ def remove_event_data(id_user):
     db.session.commit()
 
 
+def show_event(id_event=0, id_base_event=0, id_user=0):
+    """Возращает Event по id  или id_base """
+    if id_event != 0:
+        t = db.session.query(EVENTS).filter_by(id=id_event).first()
+    # if id_base_event == 0:
+    #     # t = db.session.query(EVENTS).filter_by(id=id_event).first()
+    #     t = db.session.query(EVENTS).filter_by(id_base_event=id_base_event, id_user=id_user).first()
+    else:
+        t = db.session.query(EVENTS).filter_by(id_base_event=id_base_event, id_user=id_user).first()
+    return t
+
+
 def add_events(id_curent_user, event_name, caption, start_date, end_date, id_base_user=0, id_base_event=0):
     """Добавяет соревнование, на вход получает название,
      описание дату старта и дату окоончания"""
@@ -111,7 +125,6 @@ def add_events(id_curent_user, event_name, caption, start_date, end_date, id_bas
     new_events = EVENTS(id_user=id_curent_user, event_name=event_name, start_date=start_date, end_date=end_date,
                         create_date=create_date, caption=caption, id_base_user=id_base_user,
                         id_base_event=id_base_event)
-    # print(new_events.id)
     db.session.add(new_events)
     db.session.commit()
 
@@ -124,9 +137,6 @@ def add_events(id_curent_user, event_name, caption, start_date, end_date, id_bas
         role_event = RoleEvents(id_event=new_events.id, id_user=id_curent_user, status="creator")
         db.session.add(role_event)
         db.session.commit()
-
-
-    # print(new_events.id)
 
 
 # добавляет игрока в соревнование
@@ -157,7 +167,6 @@ def set_exercise_data(EventsDataID, ex1=0, ex2=0, ex3=0, ex4=0, ex5=0, ex6=0, ex
     EvData.result_player = ExData.result_player
     EvData.reached_rank = id_reached_rank(EventsDataID)
     db.session.commit()
-    # db.session.commit()
 
 
 def id_reached_rank(EventsDataID):
@@ -186,32 +195,6 @@ def id_reached_rank(EventsDataID):
             if i == 0 or i == 1:
                 return "МСМК"
     return "Б/Р"
-
-
-# запрос на регистрацию пользователя
-def signup_query(username, email, password):
-    user = USER.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
-    create_date = str(datetime.now())
-    # if user:# if a user is found, we want to redirect back to signup page so user can try again
-    #     return 0
-
-    # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-    # print("test=",user, email,generate_password_hash(password, method='sha256'))
-    new_user = USER(login=username, email=email, password_hash=generate_password_hash(password, method='sha256'), date_user_made=create_date)
-
-    # add the new user to the database
-    db.session.add(new_user)
-    db.session.commit()
-    # return 1
-
-# def login(email, password):
-#     if 0:
-#         return 0
-#     else:
-#         email = USER.query.filter_by(email=email).first()
-#         password = USER.query.filter_by(password=password).first()
-#         if email and password:
-#             return 1
 
 
 # переименовать функции 1 выдает количество выстрелов а также серии по ид упражнения для формы заполения результатов

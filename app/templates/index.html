@@ -2,8 +2,12 @@
 
 {% block content %}
 
-
-<p>Погода во Влдаивостоке {{temp}}</p>
-
+<p>Новости</p>
+<p>-----------</p>
+{% for i in posts %}
+    <p>{{i.title}}</p>
+    <p>{{i.Text}}</p>
+    <p>-----------</p>
+{% endfor %}
 
 {% endblock %}

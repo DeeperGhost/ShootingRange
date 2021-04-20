@@ -29,7 +29,6 @@ from app.logic.admin_logic import lst_users_roles
 from app.logic.admin_logic import delete_user
 
 
-from app.logic.user_logic import signup_query
 from app.logic.user_logic import add_events, select_events, add_event_data, select_event_members
 from app.logic.user_logic import select_event, remove_event, remove_event_data
 from app.logic.user_logic import parametr_exercise, _id_exercise_by_name, _gun_exercise_by_name
@@ -57,12 +56,15 @@ def favicon():
 @basic_view.route('/index', methods=['GET', 'POST'])
 @base_view_except
 def index():
-    stri  = "https://api.openweathermap.org/data/2.5/weather?q=vladivostok&appid=4f700615ae41e5d6e83b562a95e7c16f&lang=ru"
-    response = requests.get(stri)
-    temp = json.loads(response.text)
+    """стартовая страница с новостями"""
+    # прогноз погоды владивосток
+    # stri  = "https://api.openweathermap.org/data/2.5/weather?q=vladivostok&appid=4f700615ae41e5d6e83b562a95e7c16f&lang=ru"
+    # response = requests.get(stri)
+    # temp = json.loads(response.text)
     # print(temp)
+    posts=[{"title":"Title1", "Text":"Text1"}, {"title":"Title2", "Text":"Text2"}]
 
-    return render_template('index.html', temp=temp, title='Новости')
+    return render_template('index.html', posts=posts, title='Новости')
 
 
 # вкладка about на данный момент пустая
@@ -108,7 +110,7 @@ def profile():
 # @base_view_except
 @login_required
 def event(idevent):
-    table = select_event_members(idevent)
+    table = select_event_members(idevent, all=False)
     event_name = select_event(idevent).event_name
 
     # print(current_user.get_id(), 'id')
