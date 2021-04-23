@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<script type="text/javascript" src="{{ url_for('static', filename='js/to_js.js') }}"></script>
 <h2>Соревнование -- {{event_name}}</h2>
 
 <br>
@@ -30,7 +30,7 @@
             <td>{{i[0].sex_player}}</td>
             <td>{{i[1]}}</td>
             <td>{{i[0].section_player}}</td>
-            <td><a href="{{ url_for('basic_view.result', id=i[0].id) }}">{{i[0].result_player}}</a></td>
+            <td><a href="#" onclick="show_result({{i[0].id}})">{{i[0].result_player}}</a></td>
             <td><a href="{{ url_for('basic_view.editresult', iduser=i[0].id, idevent=id_event) }}">редактировать</a>
                 <a href="{{ url_for('basic_view.eventdataremove', iduser=i[0].id, idevent=id_event) }}">удалить</a></td>
             <td>{{i[0].reached_rank}}</td>
@@ -90,4 +90,28 @@
     </form>
 </table>
 
+
+<dialog id="favDialog" >
+    <h3>справка участника</h3>
+    <ul id="ul">
+        <li id="li_name">имя</li>
+        <li id="li_age">возраст</li>
+        <li id="li_sex">пол -</li>
+        <li id="li_city">город -</li>
+        <li id="li_organization">спортивный клуб -</li>
+        <li id="li_rank">спортивный разряд -</li>
+        <li id="li_event">соревнование -</li>
+        <li id="li_excercise">упражнение -</li>
+        <li id="li_result">результат -</li>
+        <ul>
+            <li>1 подход</li>
+            <li>...</li>
+            <li>n подход</li>
+            <li>количество 10</li>
+        </ul>
+        <li id="li_reached_rank">Выполненый разряд</li>
+
+    </ul>
+    <button id="close" onclick="close_dialog()">CLOSE</button>
+</dialog>
 {% endblock %}

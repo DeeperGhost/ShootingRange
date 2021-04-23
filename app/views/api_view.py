@@ -1,3 +1,5 @@
+import json
+
 from flask import jsonify
 from flask import Blueprint
 from flask import request
@@ -34,6 +36,8 @@ def reg_role_user_event():
 # @base_view_except
 @login_required
 def add_role_event():
+    """Добавляет роль пользователя в соревновании
+    дополнительно( удаляет соревнование личное если роль убирают или созадет если роль добавляется)"""
     from app.logic.user_logic import show_event, add_events, remove_event
 
     request_data = request.get_json(force=True)
@@ -68,3 +72,13 @@ def add_role_event():
             return jsonify(status="denied", category="error")
     else:
         return jsonify(status="denied", category="not login")
+
+
+@api_view.route('/show_result/<int:id_user>', methods=['GET', 'POST'])
+def show_result(id_user):
+    """возвращает результаты участника для всплывающего окна"""
+    from app.logic.user_logic import select_result_test
+    t = select_result_test(id_user)
+
+    return jsonify(t._asdict())
+

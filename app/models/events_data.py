@@ -60,3 +60,6 @@ class EventsData(UserMixin, db.Model):
         return '%d, %d, %s, %s, %s, %s, %s, %s, %s' % (self.id, self.id_event, self.name_player, self.city_player,
                                                        self.organization_player, self.sex_player, self.age_player,
                                                        self.gun_player, self.section_player)
+
+    # def as_dict(self):
+    #     return {c.name: getattr(self, c.name) for c in self.__table__.columns}

@@ -229,18 +229,18 @@ def editresult(iduser, idevent):
     return render_template('editresult.html', title='внести данные', form=form, series=series)
 
 
-@basic_view.route('/result/<int:id>')
-# @base_view_except
-def result(id):
-    """View вывода результатов участника
-    -требуются доработки"""
-    t1, t2 = select_result(id)
-    entries, series = parametr_exercise(id)
-    # t3 = str(t1).split(',')
-    # # for i in t3:
-    # #     print(i)
-    # print(entries,series)
-    return render_template('result.html', title='резултат', t1=t1,t2=t2)
+# @basic_view.route('/result/<int:id>')
+# # @base_view_except
+# def result(id):
+#     """View вывода результатов участника
+#     -требуются доработки"""
+#     t1, t2 = select_result(id)
+#     entries, series = parametr_exercise(id)
+#     # t3 = str(t1).split(',')
+#     # # for i in t3:
+#     # #     print(i)
+#     # print(entries,series)
+#     return render_template('result.html', title='резултат', t1=t1,t2=t2)
 
 
 @basic_view.route('/eventedit/<int:id>')

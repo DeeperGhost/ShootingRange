@@ -1,5 +1,6 @@
 //var url1 = 'http://192.168.0.100:9999/test'
-var url1 = '/test'
+//var url1 = '/test'
+var url1 = '/show_result/111'
 var getJSON = function(url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
@@ -23,8 +24,8 @@ function(err, data) {
   } else {
 //    alert('Your query count: ' + data.username);
 //        document.write('<p>'+data.username+'<\p>')
-        document.getElementById('testID').textContent = data.username;
-        
+//        document.getElementById('testID').textContent = data.username;
+        alert(data.id)
   }
 });
 };

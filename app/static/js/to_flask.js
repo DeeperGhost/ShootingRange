@@ -35,3 +35,5 @@ function add_role_event(id_event, id_user, value){
     xhr.send(json);
     xhr.onload = () => alert(xhr.response.status);
 }
+
+

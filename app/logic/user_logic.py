@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -214,9 +215,26 @@ def _gun_exercise_by_name(name):
 
 
 def select_result(id):
+    """Выводит результаты участника полные (вместе с данными о соревновании)"""
     t1 = db.session.query(ExerciseData).filter_by(EventsDataID=id).first()
     t2 = db.session.query(EventsData).filter_by(id=id).first()
+
     return t1, t2
+
+
+def select_result_test(id_user):
+    """Возвращиет json данных участника о соревновании"""
+    t = db.session.query(EventsData.id, EventsData.name_player, EventsData.age_player, EventsData.sex_player,
+                         EventsData.city_player, EventsData.organization_player, RankTable.name.label("rank_name"),
+                         EVENTS.event_name.label("event_name"), EventsData.section_player, EventsData.result_player,
+                         EventsData.reached_rank)\
+        .join(RankTable) \
+        .join(EVENTS) \
+        .filter(RankTable.RankID == EventsData.RankID) \
+        .filter(EventsData.id == id_user).first()
+    print(t)
+    # return json.dumps(t._asdict())
+    return t
 
 
 def select_checked(id_user, id_event):
