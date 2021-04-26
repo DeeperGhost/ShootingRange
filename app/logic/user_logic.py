@@ -227,12 +227,15 @@ def select_result_test(id_user):
     t = db.session.query(EventsData.id, EventsData.name_player, EventsData.age_player, EventsData.sex_player,
                          EventsData.city_player, EventsData.organization_player, RankTable.name.label("rank_name"),
                          EVENTS.event_name.label("event_name"), EventsData.section_player, EventsData.result_player,
-                         EventsData.reached_rank)\
+                         EventsData.reached_rank,
+                         ExerciseData.ex1, ExerciseData.ex2, ExerciseData.ex3, ExerciseData.ex4, ExerciseData.ex5,
+                         ExerciseData.ex6, ExerciseData.ex7, ExerciseData.ex8, ExerciseData.ex9, ExerciseData.ex10,
+                         ExerciseData.tens_count)\
         .join(RankTable) \
         .join(EVENTS) \
+        .join(ExerciseData) \
         .filter(RankTable.RankID == EventsData.RankID) \
         .filter(EventsData.id == id_user).first()
-    print(t)
     # return json.dumps(t._asdict())
     return t
 

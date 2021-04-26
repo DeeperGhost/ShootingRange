@@ -85,4 +85,12 @@ function change_data_dialog(data){
 
          elem = document.getElementById("li_reached_rank");
          elem.textContent = "выполненый разряд - " + data.reached_rank;
+
+         for(let i = 0; i < data.entries; i++){
+             elem = document.getElementById("li_ex1");
+             elem.textContent = `${i+1} подход - ` + data.ex1;
+         }
+
+          elem = document.getElementById("li_tens_count");
+          elem.textContent = "количество 10 - " + data.tens_count;
 };

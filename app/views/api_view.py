@@ -77,8 +77,20 @@ def add_role_event():
 @api_view.route('/show_result/<int:id_user>', methods=['GET', 'POST'])
 def show_result(id_user):
     """возвращает результаты участника для всплывающего окна"""
-    from app.logic.user_logic import select_result_test
+    from app.logic.user_logic import select_result_test, parametr_exercise
     t = select_result_test(id_user)
 
-    return jsonify(t._asdict())
+    print(id_user)
+    entries, series = parametr_exercise(id_user)
+
+    # print(t1)
+
+    if t:
+        t1 = t._asdict()
+        t1['entries'] = entries/10
+        print(t1)
+        # return jsonify(t._asdict())
+        return jsonify(t1)
+    else:
+        return jsonify(name_player=None)
 

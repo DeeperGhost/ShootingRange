@@ -51,6 +51,7 @@ def favicon():
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
+
 # index view на данный отображает json прогноза погоды (поменять на ленту новостей)
 @basic_view.route('/', methods=['GET', 'POST'])
 @basic_view.route('/index', methods=['GET', 'POST'])
