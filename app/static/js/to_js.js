@@ -56,41 +56,55 @@ function(err, data) {
 
 
 function change_data_dialog(data){
-        var elem = document.getElementById("li_name");
-        elem.textContent = "имя - " + data.name_player;
+    var elem = document.getElementById("li_name");
+    elem.textContent = "имя - " + data.name_player;
 
-        elem = document.getElementById("li_age");
-        elem.textContent = "возраст - " + data.age_player;
+    elem = document.getElementById("li_age");
+    elem.textContent = "возраст - " + data.age_player;
 
-        elem = document.getElementById("li_sex");
-        elem.textContent = "пол - " + data.sex_player;
+    elem = document.getElementById("li_sex");
+    elem.textContent = "пол - " + data.sex_player;
 
-        elem = document.getElementById("li_city");
-        elem.textContent = "город - " + data.city_player;
+    elem = document.getElementById("li_city");
+    elem.textContent = "город - " + data.city_player;
 
-        elem = document.getElementById("li_organization");
-        elem.textContent = "клуб - " + data.organization_player;
+    elem = document.getElementById("li_organization");
+    elem.textContent = "клуб - " + data.organization_player;
 
-         elem = document.getElementById("li_rank");
-         elem.textContent = "разряд - " + data.rank_name;
+    elem = document.getElementById("li_rank");
+    elem.textContent = "разряд - " + data.rank_name;
 
-         elem = document.getElementById("li_event");
-         elem.textContent = "соревнование - " + data.event_name;
+    elem = document.getElementById("li_event");
+    elem.textContent = "соревнование - " + data.event_name;
 
-         elem = document.getElementById("li_excercise");
-         elem.textContent = "упражнение - " + data.section_player;
+    elem = document.getElementById("li_excercise");
+    elem.textContent = "упражнение - " + data.section_player;
 
-         elem = document.getElementById("li_result");
-         elem.textContent = "результат - " + data.result_player;
+    elem = document.getElementById("li_result");
+    elem.textContent = "результат - " + data.result_player;
 
-         elem = document.getElementById("li_reached_rank");
-         elem.textContent = "выполненый разряд - " + data.reached_rank;
+    elem = document.getElementById("li_reached_rank");
+    elem.textContent = "выполненый разряд - " + data.reached_rank;
 
-         for(let i = 0; i < data.entries; i++){
-             elem = document.getElementById("li_ex1");
-             elem.textContent = `${i+1} подход - ` + data.ex1;
-         }
+//Заполняет результаты если они есть
+    for(let i = 0; i < 10; i++){
+        elem = document.getElementById(`li_ex${i+1}`);
+        if (data.entries){
+            if (data.entries >= i+1){
+                elem.textContent = `${i+1} подход - ` + data[`ex${i+1}`];
+                elem.style.display = "block";
+            }
+            else{
+                elem.textContent = `${i+1} подход - ` + "None";
+                elem.style.display = "none";
+            }
+        }
+        else{
+            elem.textContent = `${i+1} подход - ` + "None";
+            elem.style.display = "none";
+        }
+    }
 
-          elem = document.getElementById("li_tens_count");
-          elem.textContent = "количество 10 - " + data.tens_count;
+    elem = document.getElementById("li_tens_count");
+    elem.textContent = "количество 10 - " + data.tens_count;
 };
