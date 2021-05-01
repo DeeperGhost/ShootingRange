@@ -39,6 +39,22 @@ input ,  button{
     box-sizing: border-box;
 }
 
+.input_ex{
+    width: 50px;
+    margin: 5px;
+}
+.ex{
+ 
+    /* display: block; */
+    /* display: flex; */
+    /* flex-direction: row;
+    justify-content: flex-start; */
+    /* align-items:stretch; */
+
+    /* float: left; */
+    
+}
+
 .checklist{
   padding: 50px;
   position: fixed;

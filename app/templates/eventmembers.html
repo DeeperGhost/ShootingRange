@@ -31,7 +31,8 @@
             <td>{{i[1]}}</td>
             <td>{{i[0].section_player}}</td>
             <td><a href="#" onclick="show_result({{i[0].id}})">{{i[0].result_player}}</a></td>
-            <td><a href="{{ url_for('basic_view.editresult', iduser=i[0].id, idevent=id_event) }}">редактировать</a>
+            <td><a href="#" onclick="edit_result({{i[0].id}})">редактировать1</a>
+                <a href="{{ url_for('basic_view.editresult', iduser=i[0].id, idevent=id_event) }}">редактировать</a>
                 <a href="{{ url_for('basic_view.eventdataremove', iduser=i[0].id, idevent=id_event) }}">удалить</a></td>
             <td>{{i[0].reached_rank}}</td>
         </tr>
@@ -89,6 +90,63 @@
             </tr>
     </form>
 </table>
+
+
+
+<dialog id="editDialog">
+    <h3 id="editDialogH3"></h3>
+
+    <form id="resForm" class="resForm">
+        <div class="ex">
+            <label for="ex1" id="label_ex1">1 подход - </label>
+            <input class="input_ex" type="number" name="ex1" id="ex1" min="0" max="100" maxlength="3" size="3">
+        </div>
+        <div class="ex">
+            <label for="ex2" id="label_ex2">2 подход - </label>
+            <input class="input_ex" type="number" name="ex2" id="ex2" min="0" max="100" maxlength="3" size="3">
+        </div>
+        <div class="ex">
+            <label for="ex3" id="label_ex3">3 подход - </label>
+            <input class="input_ex" type="number" name="ex3" id="ex3" min="0" max="100" maxlength="3" size="3">
+        </div>
+        <div class="ex">
+            <label for="ex4" id="label_ex4">4 подход - </label>
+            <input class="input_ex" type="number" name="ex4" id="ex4" min="0" max="100" maxlength="3" size="3">
+        </div>
+        <div class="ex">
+            <label for="ex5" id="label_ex5">5 подход - </label>
+            <input class="input_ex" type="number" name="ex5" id="ex5" min="0" max="100" maxlength="3" size="3">
+        </div>
+        <div class="ex">
+            <label for="ex6" id="label_ex6">6 подход - </label>
+            <input class="input_ex" type="number" name="ex6" id="ex6" min="0" max="100" maxlength="3" size="3">
+        </div>
+        <div class="ex">
+            <label for="ex7" id="label_ex7">7 подход - </label>
+            <input class="input_ex" type="number" name="ex7" id="ex7" min="0" max="100" maxlength="3" size="3">
+        </div>
+        <div class="ex">
+            <label for="ex8" id="label_ex8">8 подход - </label>
+            <input class="input_ex" type="number" name="ex8" id="ex8" min="0" max="100" maxlength="3" size="3">
+        </div>
+        <div class="ex">
+            <label for="ex9" id="label_ex9">9 подход - </label>
+            <input class="input_ex" type="number" name="ex9" id="ex9" min="0" max="100" maxlength="3" size="3">
+        </div>
+        <div class="ex">
+            <label for="ex10" id="label_ex10">10 подход - </label>
+            <input class="input_ex" type="number" name="ex10" id="ex10" min="0" max="100" maxlength="3" size="3">
+        </div>
+        <div class="ex">
+            <label for="tens">количество 10 - </label>
+            <input class="input_ex" type="number" name="tens" id="tens" min="0" max="100" maxlength="3" size="3">
+        </div>
+
+        
+        <input type="submit" value="Submit">
+    </form>
+
+</dialog>
 
 
 <dialog id="favDialog" >

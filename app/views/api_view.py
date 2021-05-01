@@ -24,7 +24,6 @@ def add_red():
 @login_required
 def reg_role_user_event():
     request_data = request.get_json(force=True)
-
     value = "register" if request_data['value'] else "unregister"
     if set_event_role(id_user=request_data['id_user'], id_event=request_data['id'], status=value):
         return jsonify(status="done")
@@ -42,9 +41,7 @@ def add_role_event():
 
     request_data = request.get_json(force=True)
 
-    print(request_data)
     value = "user" if request_data['value'] else "register"
-    print(value)
     # проверка на то что пользователь является создателем соревнования
     if check_user_role_creator(id_user=current_user.id, id_event=request_data['id_event']):
         if set_event_role(id_user=request_data['id_user'],
@@ -53,20 +50,13 @@ def add_role_event():
             # убираем соревнование
             if value == "user":
                 t = show_event(id_event=request_data['id_event'])
-                # print(t.id, t.event_name, t.caption, t.start_date, t.end_date)
-                # pass
-
                 add_events(id_curent_user=request_data['id_user'],
                            event_name=t.event_name, caption=t.caption, start_date=t.start_date, end_date=t.end_date,
                            id_base_user=current_user.id, id_base_event=request_data['id_event'])
             # добавляем соревнвоание
             else:
-
                 t = show_event(id_base_event=request_data['id_event'], id_user=request_data['id_user'])
-                # t = show_event(id_base_event=request_data['id_event'], id_user=33)
-                print(t.id)
                 remove_event(id_event=t.id)
-
             return jsonify(status="done")
         else:
             return jsonify(status="denied", category="error")
@@ -87,3 +77,19 @@ def show_result(id_user):
         return jsonify(t1)
     else:
         return jsonify(name_player=None)
+
+
+@api_view.route('/edit_result/<int:id_user>', methods=['GET', 'POST'])
+@login_required
+def edit_result(id_user):
+    """Ввоод и редактирование результатов участника в соревновании"""
+    # from app.logic.user_logic import select_result_test, parametr_exercise
+    # t = select_result_test(id_user)
+    #
+    # entries, series = parametr_exercise(id_user)
+    # print(t)
+    # print(entries, series)
+    request_data = request.get_json(force=True)
+    print(request_data['value'])
+    return jsonify(status="done")
+
