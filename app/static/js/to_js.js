@@ -103,87 +103,92 @@ function change_data_dialog(data){
 };
 /*=========================================================================*/
 /*EDIT_RESULT*/
-function openEditDialog(data){
-//открывает модальное окно
-        (function() {
-//        Закрывает модальное окно при нажатии на бек граунд
-            editDialog.addEventListener('click', (event) => {
-                if (event.target === editDialog) {
-                    editDialog.close('cancelled');
-                }
-              });
-
-          })();
-    let dialog = document.getElementById('editDialog');
-
-    changeEditDialog(data);
-
-    dialog.showModal();
-}
-function changeEditDialog(data){
-  elem = document.getElementById("editDialogH3");
-  elem.textContent = "Внесение результатов участника"
-
-  for(let i = 1; i < 11; i++){
-    if (data.entries >= i){
-      document.getElementById(`ex${i}`).value = data[`ex${i}`];
-      document.getElementById(`ex${i}`).hidden=false; 
-      document.getElementById(`label_ex${i}`).hidden=false; 
-    }
-    else{
-      // document.getElementById(`ex${i}`).style.display = "none";
-      document.getElementById(`ex${i}`).hidden=true; 
-      document.getElementById(`label_ex${i}`).hidden=true; 
-      // document.getElementById(`label_ex${i}`).style.display = "none";
-    }
-  }
-  // document.getElementById("ex1").value = data.ex1;
-  // document.getElementById("ex2").value = data.ex2;
-  // document.getElementById("ex3").value = data.ex3;
-  // document.getElementById("ex4").value = data.ex4;
-  // document.getElementById("ex5").value = data.ex5;
-  // document.getElementById("ex6").value = data.ex6;
-  // document.getElementById("ex7").value = data.ex7;
-  // document.getElementById("ex8").value = data.ex8;
-  // document.getElementById("ex9").value = data.ex9;
-  // document.getElementById("label_ex9").style.display = "none";
-  // document.getElementById("ex9").style.display = "none";
-  // document.getElementById("ex10").value = data.ex10;
-
-  document.getElementById("tens").value = data.tens_count;
-  // elem.document.getElementById("ex1");
-  // elem.value = data.ex1;
-
-  // elem.document.getElementById("ex2");
-  // elem.value = data.ex2;
-  // alert(data.ex10)
-}
-
-var url_edit = '/edit_result/'
 var edit_result = function(id_user){
 getJSON(url+id_user,
 function(err, data) {
   if (err !== null) {
     alert('Something went wrong: ' + err);
   } else {
-//    alert(data.name_player);
-
-    var formData = {
-        id_user: 1,
-        id_event: 11,
-        value: 111,
-        test :12
-    }
-
-    openEditDialog(data)
-
-    var json = JSON.stringify(formData);
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', url_edit+id_user, true);
-    xhr.responseType = 'json';
-    xhr.send(json);
-    xhr.onload = () => alert(xhr.response.status);
-
+//    alert(data.name_player); 
+    openEditDialog(data);
   }
 });
 };
+
+function openEditDialog(data){
+  //открывает модальное окно
+          (function() {
+  //        Закрывает модальное окно при нажатии на бек граунд
+              editDialog.addEventListener('click', (event) => {
+                  if (event.target === editDialog) {
+                      editDialog.close('cancelled');
+                  }
+                  // вызов обработчика отправки формы
+                  if(event.target === submitResForm) {
+                    onSubmitRes(data["id_user"]);
+                  }
+                });
+  
+            })();
+      let dialog = document.getElementById('editDialog'); 
+      changeEditDialog(data);
+      dialog.showModal();
+}
+
+function changeEditDialog(data){
+  // Заполняет форму начальными данными из бд
+    elem = document.getElementById("editDialogH3");
+    elem.textContent = "Внесение результатов участника"
+  
+    for(let i = 1; i < 11; i++){
+      if (data.entries >= i){
+        document.getElementById(`ex${i}`).value = data[`ex${i}`];
+        document.getElementById(`ex${i}`).hidden=false; 
+        document.getElementById(`label_ex${i}`).hidden=false; 
+      }
+      else{
+        document.getElementById(`ex${i}`).value = 0;
+        document.getElementById(`ex${i}`).hidden=true; 
+        document.getElementById(`label_ex${i}`).hidden=true; 
+        // document.getElementById(`ex${i}`).remove(); 
+        // document.getElementById(`label_ex${i}`).remove(); 
+      }
+    }
+    document.getElementById("tens").value = data.tens_count;
+  }
+
+function onSubmitRes(idUser) {
+  // отправка формы результатов на сервер
+//   document.getElementById("resForm").submit();
+  let form = document.forms.resForm;
+  if (!form.checkValidity())
+  {
+    alert("PROBLEM IN FORM");
+    return false
+  }
+  else{
+    let elem = form.elements;
+    let formData ={
+      idUser: idUser,
+      ex1: Number(elem.ex1.value),
+      ex2: Number(elem.ex2.value),
+      ex3: Number(elem.ex3.value),
+      ex4: Number(elem.ex4.value),
+      ex5: Number(elem.ex5.value),
+      ex6: Number(elem.ex6.value),
+      ex7: Number(elem.ex7.value),
+      ex8: Number(elem.ex8.value),
+      ex9: Number(elem.ex9.value),
+      ex10: Number(elem.ex10.value),
+      tens: Number(elem.tens.value)
+    }
+
+    var url_edit = '/edit_result/'
+    var json = JSON.stringify(formData);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', url_edit+idUser, true);
+    xhr.responseType = 'json';
+    xhr.send(json);
+    xhr.onload = () => alert(xhr.response.status);
+  }
+}

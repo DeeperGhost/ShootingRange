@@ -74,22 +74,31 @@ def show_result(id_user):
     if t:
         t1 = t._asdict()
         t1['entries'] = entries/10
+        t1['id_user'] = id_user
         return jsonify(t1)
     else:
-        return jsonify(name_player=None)
+        return jsonify(name_player=None, entries=entries/10, id_user=id_user)
 
 
 @api_view.route('/edit_result/<int:id_user>', methods=['GET', 'POST'])
 @login_required
 def edit_result(id_user):
     """Ввоод и редактирование результатов участника в соревновании"""
-    # from app.logic.user_logic import select_result_test, parametr_exercise
+    from app.logic.user_logic import set_exercise_data
+
     # t = select_result_test(id_user)
     #
     # entries, series = parametr_exercise(id_user)
-    # print(t)
-    # print(entries, series)
-    request_data = request.get_json(force=True)
-    print(request_data['value'])
+
+    # request_data = request.get_json(force=True)
+    rd = request.get_json(force=True)
+    # set_exercise_data(request_data)
+    print(rd['idUser'])
+    print(rd)
+    set_exercise_data(EventsDataID=rd['idUser'], ex1=rd['ex1'], ex2=rd['ex2'], ex3=rd['ex3'], ex4=rd['ex4'],
+                      ex5=rd['ex5'], ex6=rd['ex6'], ex7=rd['ex7'], ex8=rd['ex8'], ex9=rd['ex9'], ex10=rd['ex10'],
+                      tens_count=rd['tens'])
+    # for i in request_data:
+    #     print(request_data[i])
     return jsonify(status="done")
 

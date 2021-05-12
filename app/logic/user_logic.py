@@ -154,6 +154,7 @@ def add_event_data(id_event,ExerciseID, RankID,  name_player, sex_player, age_pl
 
 # добавляет игрока в соревнование
 def set_exercise_data(EventsDataID, ex1=0, ex2=0, ex3=0, ex4=0, ex5=0, ex6=0, ex7=0, ex8=0, ex9=0, ex10=0, tens_count=0):
+    """станавливает результаты соревнования участника"""
     # create_date = datetime.strftime(datetime.now(), "%Y.%m.%d %H:%M:%S")
     ExerciseData.query.filter_by(EventsDataID=EventsDataID).delete()
     db.session.commit()

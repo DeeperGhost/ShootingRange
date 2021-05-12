@@ -36,6 +36,7 @@
                 <a href="{{ url_for('basic_view.eventdataremove', iduser=i[0].id, idevent=id_event) }}">удалить</a></td>
             <td>{{i[0].reached_rank}}</td>
         </tr>
+
     {% endfor %}
 
     <form action="" method="post">
@@ -96,7 +97,7 @@
 <dialog id="editDialog">
     <h3 id="editDialogH3"></h3>
 
-    <form id="resForm" class="resForm">
+    <form id="resForm" class="resForm" action="" method="post">
         <div class="ex">
             <label for="ex1" id="label_ex1">1 подход - </label>
             <input class="input_ex" type="number" name="ex1" id="ex1" min="0" max="100" maxlength="3" size="3">
@@ -143,10 +144,11 @@
         </div>
 
         
-        <input type="submit" value="Submit">
+        <input id="submitResForm" type="submit" value="Submit2" >
     </form>
 
 </dialog>
+
 
 
 <dialog id="favDialog" >
